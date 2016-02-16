@@ -1,0 +1,15 @@
+redis:
+  image: redis:3.0.7-alpine
+  command: redis-server --appendonly yes
+  volumes:
+    - "data:/data"
+  ports:
+    - "3679:3679"
+web:
+  build: .
+  volumes:
+      - .:/app/
+  ports:
+      - "8000:8000"
+  links:
+    - redis
