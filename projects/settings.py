@@ -11,6 +11,14 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import environ
+root = environ.Path(__file__) - 2  # three folder back (/a/b/c/ - 3 = /)
+env = environ.Env(
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
+    REDIS_URL=(str, "redis:6379")
+)  # set default values and casting
+environ.Env.read_env(str(root.path('.env')))  # reading .env file
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +28,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+cpg@kj0e-vvbj+)^1zc@k0^&qc-%5=6i(^a5l1=updc8t@85-'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -69,19 +77,19 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': 'redis:6379',
+        'LOCATION': env('REDIS_URL'),
     },
 }
 
 RQ_QUEUES = {
     'default': {
-        'USE_REDIS_CACHE': 'redis-cache',
+        'USE_REDIS_CACHE': 'default',
     },
     'high': {
-        'USE_REDIS_CACHE': 'redis-cache',
+        'USE_REDIS_CACHE': 'default',
     },
     'low': {
-        'USE_REDIS_CACHE': 'redis-cache',
+        'USE_REDIS_CACHE': 'default',
     },
 }
 

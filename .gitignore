@@ -1,6 +1,9 @@
 #redis data dir
 data/
 
+# local environment overrides
+.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
