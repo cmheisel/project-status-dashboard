@@ -16,7 +16,8 @@ root = environ.Path(__file__) - 2  # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
-    REDIS_URL=(str, "redis:6379")
+    REDIS_URL=(str, "redis:6379"),
+    GOOGLE_SPREADSHEET_ID=(str, ""),
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
 
@@ -40,8 +41,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
-    'django_rq',
     'dashboard',
+    'django_rq',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -118,3 +119,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GOOGLE_SPREADSHEET_ID = env('GOOGLE_SPREADSHEET_ID')

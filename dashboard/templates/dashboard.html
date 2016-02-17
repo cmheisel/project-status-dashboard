@@ -1,0 +1,24 @@
+<html>
+<body>
+
+<table>
+    <tr>
+    {% for key in data.0.keys %}
+        <th>{{ key }}</th>
+    {% endfor %}
+        <th>Progress</th>
+    </tr>
+{% for row in data %}
+    <tr>
+        {% for value in row.values %}
+        <td>{{ value }}</td>
+        {% endfor %}
+        <td>
+            {{ percents|random }}% ({{ deltas|random }})
+        </td>
+    </tr>
+{% endfor %}
+</table>
+
+</body>
+</html>
