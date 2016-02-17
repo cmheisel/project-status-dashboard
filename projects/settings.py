@@ -17,7 +17,10 @@ env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
     REDIS_URL=(str, "redis:6379"),
-    GOOGLE_SPREADSHEET_ID=(str, ""),
+    GOOGLE_SPREADSHEET_ID=(str),
+    JIRA_URL=(str),
+    JIRA_AUTH=(tuple,()),
+    JIRA_DONE=(list,["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete"])
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
 
@@ -121,3 +124,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 GOOGLE_SPREADSHEET_ID = env('GOOGLE_SPREADSHEET_ID')
+JIRA_URL = env('JIRA_URL')
+JIRA_AUTH = env('JIRA_AUTH')
+JIRA_DONE = env('JIRA_DONE')

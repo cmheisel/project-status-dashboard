@@ -1,3 +1,4 @@
+{% load dashboard_tags %}
 <html>
 <body>
 
@@ -14,7 +15,9 @@
         <td>{{ value }}</td>
         {% endfor %}
         <td>
-            {{ percents|random }}% ({{ deltas|random }})
+            {% if row.xtras.jira_summary %}
+                {{ row.xtras.jira_summary.pct_complete|percentage }}
+            {% endif %}
         </td>
     </tr>
 {% endfor %}

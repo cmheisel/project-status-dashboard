@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.http import JsonResponse
 from django.views.generic import View, TemplateView
 
-from .services import sheets
+from .services import sheets, jira
 
 
 class HealthCheck(View):
@@ -26,9 +26,9 @@ class Dashboard(TemplateView):
         sheet_id = settings.GOOGLE_SPREADSHEET_ID
         data = sheets.load_sheet(sheet_id)
 
-        # HACK: Make real
-        hack_percents = [5, 33, 25, 90, 87, 30, 0,]
-        hack_deltas = [5, -3, 10, -20, -1, -.5, 0, 0, 0]
+        for row in data:
+            if row.xtras.get('_jira_filter'):
+                row.xtras['jira_summary'] = jira.summarize_query(row.xtras['_jira_filter'])
 
-        context = dict(data=data, percents=hack_percents, deltas=hack_deltas)
+        context = dict(data=data)
         return context
