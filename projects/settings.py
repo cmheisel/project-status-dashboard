@@ -20,7 +20,7 @@ env = environ.Env(
     GOOGLE_SPREADSHEET_ID=(str),
     JIRA_URL=(str),
     JIRA_AUTH=(tuple,()),
-    JIRA_DONE=(list,["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete"])
+    JIRA_DONE=(list,["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"])
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
 

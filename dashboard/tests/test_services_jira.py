@@ -39,5 +39,6 @@ def test_summarize_results(jira, settings):
         'incomplete': 2,
         'complete': 1,
         'pct_complete': 1 / 3.0,
+        'total': 3,
     }
     assert jira.summarize_results(issue_list) == expected

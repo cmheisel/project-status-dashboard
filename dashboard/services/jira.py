@@ -21,7 +21,8 @@ def summarize_results(results):
     summary = {
         'incomplete': 0,
         'complete': 0,
-        'pct_complete': 0
+        'pct_complete': 0,
+        'total': 0,
     }
     total = results['total']
     for issue in results['issues']:
@@ -30,6 +31,7 @@ def summarize_results(results):
         else:
             summary['incomplete'] += 1
 
+    summary['total'] = total
     summary['pct_complete'] = summary['complete'] / float(total)
     return summary
 

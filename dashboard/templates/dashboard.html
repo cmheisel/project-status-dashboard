@@ -16,7 +16,7 @@
         {% endfor %}
         <td>
             {% if row.xtras.jira_summary %}
-                {{ row.xtras.jira_summary.pct_complete|percentage }}
+                {{ row.xtras.jira_summary.pct_complete|percentage }} ({{ row.xtras.jira_summary.complete }}/{{ row.xtras.jira_summary.total }})
             {% endif %}
         </td>
     </tr>
