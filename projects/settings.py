@@ -17,10 +17,12 @@ env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
     REDIS_URL=(str, "redis:6379"),
+    REDIS_DB=(int, 1),
     GOOGLE_SPREADSHEET_ID=(str),
     JIRA_URL=(str),
-    JIRA_AUTH=(tuple,()),
-    JIRA_DONE=(list,["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"])
+    JIRA_AUTH=(tuple, ()),
+    JIRA_DONE=(list, ["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"]),
+    ALLOWED_HOSTS=(list, []),
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
 
@@ -37,7 +39,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -82,6 +84,9 @@ CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
         'LOCATION': env('REDIS_URL'),
+        'OPTIONS': {
+            'DB': env('REDIS_DB'),
+        }
     },
 }
 
