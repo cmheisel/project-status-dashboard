@@ -1,8 +1,6 @@
 redis:
   image: redis:3.0.7-alpine
-  command: redis-server --appendonly yes
-  volumes:
-    - "data:/data"
+  command: ["redis-server", "--appendonly", "yes"]
   ports:
     - "3679:3679"
 web:
@@ -11,6 +9,13 @@ web:
   volumes:
       - .:/app/
   ports:
-      - "8000:8000"
+    - "8000:8000"
+  links:
+    - redis
+worker:
+  build: .
+  command: /app-ve/bin/python /app/manage.py rqworker default
+  volumes:
+      - .:/app/
   links:
     - redis

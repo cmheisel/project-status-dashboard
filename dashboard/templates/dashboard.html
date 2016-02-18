@@ -1,8 +1,12 @@
+{% load tz %}
 {% load dashboard_tags %}
 <html>
 <body>
 
 <table>
+    <caption>
+            Updated: {{ updated }}
+    </caption>
     <tr>
     {% for key in data.0.keys %}
         <th>{{ key }}</th>

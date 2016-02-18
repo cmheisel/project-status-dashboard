@@ -1,12 +1,12 @@
 import datetime
+import time
 
 from django.conf import settings
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.views.generic import View, TemplateView
 
-from .services import sheets, jira
-
+from .jobs import dashboard_data_fetch
 
 class HealthCheck(View):
     def get(self, request, *args, **kwargs):
@@ -23,12 +23,11 @@ class Dashboard(TemplateView):
     template_name = "dashboard.html"
 
     def get_context_data(self, **kwargs):
-        sheet_id = settings.GOOGLE_SPREADSHEET_ID
-        data = sheets.load_sheet(sheet_id)
-
-        for row in data:
-            if row.xtras.get('_jira_filter'):
-                row.xtras['jira_summary'] = jira.summarize_query(row.xtras['_jira_filter'])
-
-        context = dict(data=data)
+        data = cache.get('dashboard_data', [])
+        updated = cache.get('dashboard_data_updated', None)
+        job = dashboard_data_fetch.delay()
+        if not data:
+            while job.result is not True:
+                time.sleep(1)
+        context = dict(data=data, updated=updated)
         return context
