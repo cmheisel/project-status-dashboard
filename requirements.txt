@@ -1,7 +1,7 @@
 Django==1.9.2
 click==6.2
 django-redis-cache==1.6.5
-django-rq==0.9.0
+-e git+https://github.com/ui/django-rq.git@3bd07acd92143fa4e77089b6d65cde5a7a6aee4b#egg=django_rq-master
 redis==2.10.5
 rq==0.5.6
 

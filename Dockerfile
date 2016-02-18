@@ -8,6 +8,7 @@ RUN apt-get update -y && apt-get install -y \
     libpq-dev \
     supervisor \
     python-pip \
+    git \
     && pip install supervisor==3.2.1 supervisor-stdout==0.1.1 \
     && pip3 install -U pip \
     && rm -rf /var/lib/apt/lists/*
