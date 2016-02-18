@@ -13,7 +13,7 @@ def query_url(filter_id, jira_url=None):
 
 def fetch_query_results(filter_id):
     url = query_url(filter_id)
-    results = requests.get(url, auth=settings.JIRA_AUTH).json()
+    results = requests.get(url, auth=settings.JIRA_AUTH, verify=False).json()
     return results
 
 
