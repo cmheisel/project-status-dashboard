@@ -1,5 +1,6 @@
 #redis data dir
 data/
+reqs
 
 # local environment overrides
 .env
