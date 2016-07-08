@@ -1,4 +1,11 @@
 from django.db import models
 
-# Create your models here.
-assert models
+
+class ProjectSummary(models.Model):
+    """Summary data about a JIRA filter for a particular date."""
+
+    filter_id = models.IntegerField()
+    incomplete = models.IntegerField()
+    complete = models.IntegerField()
+    total = models.IntegerField()
+    fetched_on = models.DateField()
