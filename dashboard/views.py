@@ -1,12 +1,12 @@
 import datetime
 import time
 
-from django.conf import settings
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.views.generic import View, TemplateView
 
 from .jobs import dashboard_data_fetch
+
 
 class HealthCheck(View):
     def get(self, request, *args, **kwargs):

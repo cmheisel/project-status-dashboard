@@ -1,7 +1,5 @@
 """Functions and classes for interacting with JIRA."""
 
-from datetime import datetime
-
 import requests
 
 from django.conf import settings

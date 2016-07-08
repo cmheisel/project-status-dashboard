@@ -8,6 +8,7 @@ from django_rq import job
 
 from .services import sheets, jira
 
+
 @job
 def dashboard_data_fetch():
     sheet_id = settings.GOOGLE_SPREADSHEET_ID
