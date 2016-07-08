@@ -1,6 +1,6 @@
 future==0.15.2
 
-Django==1.9.2
+Django==1.9.7
 click==6.2
 django-redis-cache==1.6.5
 -e git+https://github.com/ui/django-rq.git@3bd07acd92143fa4e77089b6d65cde5a7a6aee4b#egg=django_rq-master
