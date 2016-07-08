@@ -22,6 +22,7 @@ env = environ.Env(
     JIRA_URL=(str),
     JIRA_AUTH=(tuple, ()),
     JIRA_DONE=(list, ["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"]),
+    JIRA_SSL_VERIFY=(bool, True),
     ALLOWED_HOSTS=(list, []),
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
@@ -126,3 +127,4 @@ GOOGLE_SPREADSHEET_ID = env('GOOGLE_SPREADSHEET_ID')
 JIRA_URL = env('JIRA_URL')
 JIRA_AUTH = env('JIRA_AUTH')
 JIRA_DONE = env('JIRA_DONE')
+JIRA_SSL_VERIFY = env('JIRA_SSL_VERIFY')
