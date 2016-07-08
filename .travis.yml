@@ -2,7 +2,6 @@ language: python
 python:
   - "3.4"
 install:
-  - make agile_analytics.egg-info
   - pip install python-coveralls
 script: "make test"
 after_success:
