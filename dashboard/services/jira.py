@@ -38,7 +38,7 @@ def fetch_query_results(filter_id):
     return results
 
 
-def summarize_results(results, now=datetime.now):
+def summarize_results(results):
     """
     Summarize the JIRA issues into a standard dictionary.
 
@@ -59,7 +59,6 @@ def summarize_results(results, now=datetime.now):
         'complete': 0,
         'pct_complete': 0,
         'total': 0,
-        'fetched_at': datetime.now(),
     }
     total = results['total']
     for issue in results['issues']:

@@ -12,7 +12,7 @@ def test_setup(sheets):
 
 
 def test_order_of_columns(sheets):
-    csv = r"""Key1,Key2,Key3,Key4
+    csv = u"""Key1,Key2,Key3,Key4
 Value1A,Value2A,Value3A,Value4A
 Value1B,Value2B,Value3B,Value4B"""
     results = sheets.parse_csv(csv)
@@ -22,7 +22,7 @@ Value1B,Value2B,Value3B,Value4B"""
 
 
 def test_order_of_rows(sheets):
-    csv = r"""Key1,Key2,Key3,Key4
+    csv = u"""Key1,Key2,Key3,Key4
 Value1A,Value2A,Value3A,Value4A
 Value1B,Value2B,Value3B,Value4B"""
     results = sheets.parse_csv(csv)
@@ -31,7 +31,7 @@ Value1B,Value2B,Value3B,Value4B"""
 
 
 def test_special_attributes(sheets):
-    csv = r"""Key1,Key2,Key3,Key4,_special_key1,_amazing_key2
+    csv = u"""Key1,Key2,Key3,Key4,_special_key1,_amazing_key2
 Value1A,Value2A,Value3A,Value4A,,
 Value1B,Value2B,Value3B,Value4B,SValue5B,SValue6B"""
     results = sheets.parse_csv(csv)

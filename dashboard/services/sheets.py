@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import csv
 import io
 
@@ -22,7 +24,7 @@ def load_sheet(sheet_id):
 
 
 def parse_csv(csv_text):
-    c = csv.reader(io.StringIO(str(csv_text)))
+    c = csv.reader(io.StringIO(unicode(csv_text)))
     rows = [row for row in c]
     keys = rows.pop(0)
     normal_keys = [k for k in keys if not k.startswith('_')]
