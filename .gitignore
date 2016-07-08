@@ -1,6 +1,9 @@
 #redis data dir
 data/
+
+# make-generated cruft
 reqs
+venv
 
 # local environment overrides
 .env
