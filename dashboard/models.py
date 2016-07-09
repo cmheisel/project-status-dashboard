@@ -8,7 +8,7 @@ class ProjectSummary(models.Model):
     incomplete = models.IntegerField()
     complete = models.IntegerField()
     total = models.IntegerField()
-    fetched_on = models.DateField()
+    created_on = models.DateField()
 
     @property
     def pct_complete(self):

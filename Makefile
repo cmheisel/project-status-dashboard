@@ -1,6 +1,6 @@
 GOOGLE_SPREADSHEET_ID ?= "fakeyfakeyfakey"
 JIRA_URL ?= "http://localhost"
-pytest_invoke = py.test -svv --flake8 --cov=dashboard ./dashboard
+pytest_invoke = py.test -s --flake8 --cov=dashboard ./dashboard
 
 venv:
 	virtualenv ./venv
