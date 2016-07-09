@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import environ
-root = environ.Path(__file__) - 2  # three folder back (/a/b/c/ - 3 = /)
+root = environ.Path(__file__) - 2
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
@@ -79,6 +79,10 @@ WSGI_APPLICATION = 'projects.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(root.path('project_status_dashboard.db')),
+    }
 }
 
 CACHES = {

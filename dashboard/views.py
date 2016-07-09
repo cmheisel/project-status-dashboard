@@ -1,5 +1,4 @@
 import datetime
-import time
 
 from django.core.cache import cache
 from django.http import JsonResponse

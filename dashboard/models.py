@@ -9,3 +9,7 @@ class ProjectSummary(models.Model):
     complete = models.IntegerField()
     total = models.IntegerField()
     fetched_on = models.DateField()
+
+    @property
+    def pct_complete(self):
+        return self.complete / float(self.total)

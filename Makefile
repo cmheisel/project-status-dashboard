@@ -20,6 +20,10 @@ clean: clean_pycs
 docs: reqs
 	cd docs && make html
 
+up:
+	docker-compose rm --all
+	docker-compose up
+
 test_docker:
 	docker-compose build web
 	docker-compose run -e GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) -e JIRA_URL=$(JIRA_URL) web /app-ve/bin/$(pytest_invoke)
