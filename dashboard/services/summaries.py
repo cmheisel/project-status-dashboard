@@ -61,4 +61,7 @@ def for_date(filter_id, date):
         None: If no summary is found
         ProjectSummary: instance that matches the date/filter combo
     """
-    return ProjectSummary.objects.get(filter_id=filter_id, created_on=date)
+    try:
+        return ProjectSummary.objects.get(filter_id=filter_id, created_on=date)
+    except ProjectSummary.DoesNotExist:
+        return None

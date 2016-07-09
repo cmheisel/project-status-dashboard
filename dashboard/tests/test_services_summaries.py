@@ -155,3 +155,14 @@ def test_for_date(summaries, make_one, datetime):
 
     s3 = summaries.for_date(filter_id=s2.filter_id, date=week_ago)
     assert s3.id == s1.id
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_for_date_sad(summaries, make_one, datetime):
+    """Validate what happens when we can't find summaries from the past."""
+    week_ago = datetime.date.today() - relativedelta(days=7)
+
+    s1 = make_one()
+    s2 = summaries.for_date(filter_id=s1.filter_id, date=week_ago)
+    assert s2 is None
