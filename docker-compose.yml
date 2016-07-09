@@ -20,7 +20,10 @@ worker:
   build: .
   entrypoint: /app/run.sh
   command: /app-ve/bin/python /app/manage.py rqworker default
+  environment:
+    - DB_NAME=/data/container.db
   volumes:
+      - ./data:/data/
       - .:/app/
   links:
     - redis

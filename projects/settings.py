@@ -13,10 +13,11 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import environ
 root = environ.Path(__file__) - 2
+default_db_name = str(root.path('project_status_dashboard.db'))
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
-    DB_FILE=(str, str(root.path('project_status_dashboard.db'))),
+    DB_NAME=(str, default_db_name),
     REDIS_URL=(str, "redis:6379"),
     REDIS_DB=(int, 1),
     GOOGLE_SPREADSHEET_ID=(str),
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'projects.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': env('DB_FILE'),
+        'NAME': env('DB_NAME'),
     }
 }
 
