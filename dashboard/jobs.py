@@ -35,4 +35,3 @@ def generate_dashboard():
     cache.set('dashboard_data', data, None)
     cache.set('dashboard_data_updated', datetime.datetime.now(get_default_timezone()), None)
     return True
-generate_dashboard.delay()

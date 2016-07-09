@@ -25,7 +25,7 @@ env = environ.Env(
     JIRA_AUTH=(tuple, ()),
     JIRA_DONE=(list, ["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"]),
     JIRA_SSL_VERIFY=(bool, True),
-    ALLOWED_HOSTS=(list, []),
+    ALLOWED_HOSTS=(list, ["*", ]),
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
 
@@ -134,3 +134,28 @@ JIRA_URL = env('JIRA_URL')
 JIRA_AUTH = env('JIRA_AUTH')
 JIRA_DONE = env('JIRA_DONE')
 JIRA_SSL_VERIFY = env('JIRA_SSL_VERIFY')
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "rq_console": {
+            "format": "%(asctime)s %(message)s",
+            "datefmt": "%H:%M:%S",
+        },
+    },
+    "handlers": {
+        "rq_console": {
+            "level": "INFO",
+            "class": "rq.utils.ColorizingStreamHandler",
+            "formatter": "rq_console",
+            "exclude": ["%(asctime)s"],
+        },
+    },
+    'loggers': {
+        "rq.worker": {
+            "handlers": ["rq_console", ],
+            "level": "INFO"
+        },
+    }
+}

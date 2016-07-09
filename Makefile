@@ -1,6 +1,9 @@
 GOOGLE_SPREADSHEET_ID ?= "fakeyfakeyfakey"
 JIRA_URL ?= "http://localhost"
 pytest_invoke = py.test -s --flake8 --cov=dashboard ./dashboard
+DOCKER_MACHINE_IP ?= $(docker-machine ip)
+DOCKER_IMAGE_NAME = "cmheisel/project-status-dashboard"
+DOCKER_IMAGE_VERSION = "v0.2"
 
 venv:
 	virtualenv ./venv
@@ -15,8 +18,8 @@ clean_pycs:
 	find . -name "*.pyc" -exec rm -rf {} \;
 
 clean_db:
-	rm data/*.db
-	rm *.db
+	rm -f data/*.db
+	rm -f *.db
 
 clean: clean_pycs
 	rm -rf venv
@@ -26,10 +29,23 @@ docs: reqs
 
 up:
 	docker-compose rm --all
+	docker-compose build
 	docker-compose up
+
+clean_docker:
+	docker-compose rm -f --all
+	docker rmi projectstatusdashboard_web
 
 test_docker:
 	docker-compose build web
 	docker-compose run -e GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) -e JIRA_URL=$(JIRA_URL) web /app-ve/bin/$(pytest_invoke)
 
-.PHONY: test clean clean_pycs docs climate test_docker
+release: test_docker clean clean_db clean_docker
+	docker-compose build web
+	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
+	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):latest
+	docker push $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
+	docker push $(DOCKER_IMAGE_NAME):latest
+
+
+.PHONY: test clean_pycs clean_db clean docs up clean_docker test_docker release
