@@ -5,3 +5,8 @@ project-status-dashboard
 ==========================
 
 Pull data about projects from a Google Sheet and JIRA.
+
+Usage
+======
+
+Use the **docker-sample/docker-compose.yml** file as a starting point.
