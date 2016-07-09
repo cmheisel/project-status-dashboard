@@ -124,3 +124,18 @@ def test_update(summaries, make_one):
     assert result == summaries.UPDATED
     assert s2.id == s.id
     assert (1, 2, 3) == (s2.incomplete, s2.complete, s2.total)
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_update_different_filters(summaries, make_one):
+    """Ensure multiple calls to create on the same date/diff filter return the same obj."""
+    s = make_one(filter_id=1234)
+    s, result = summaries.store(s)
+    assert result == summaries.SAVED
+    assert s.id
+
+    s2 = make_one(filter_id=5678)
+    s2, result = summaries.store(s2)
+    assert result == summaries.SAVED
+    assert s2.id != s.id
