@@ -3,7 +3,7 @@ JIRA_URL ?= "http://localhost"
 pytest_invoke = py.test -s --flake8 --cov=dashboard ./dashboard
 DOCKER_MACHINE_IP ?= $(docker-machine ip)
 DOCKER_IMAGE_NAME = "cmheisel/project-status-dashboard"
-DOCKER_IMAGE_VERSION = "v0.1"
+DOCKER_IMAGE_VERSION = "v0.2"
 
 venv:
 	virtualenv ./venv
