@@ -11,6 +11,9 @@ venv
 # local databases
 *.db
 
+# Mac cruft
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
