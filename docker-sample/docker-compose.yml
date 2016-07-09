@@ -1,0 +1,17 @@
+redis:
+  image: redis:3.0.7-alpine
+  command: ["redis-server", "--appendonly", "yes"]
+web:
+  image: cmheisel/project-status-dashboard:latest
+  volumes:
+      - .:/data/
+  ports:
+    - "80:8000"
+  environment:
+    - DB_NAME=/data/container.db
+    - GOOGLE_SPREADSHEET_ID=long-string-here
+    - JIRA_URL=http://jira.example.com
+    - JIRA_AUTH=user,password
+    - JIRA_DONE=Closed,Merged
+  links:
+    - redis
