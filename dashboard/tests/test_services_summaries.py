@@ -28,10 +28,18 @@ def make_one(summaries):
             complete=10,
             total=15,
         )
-        kwargs.update(defaults)
-        s = summaries.create(**kwargs)
+        defaults.update(**kwargs)
+        s = summaries.create(**defaults)
         return s
     return _make_one
+
+
+def test_make_one(make_one):
+    """Ensure our maker makes properly."""
+    s = make_one(incomplete=3, complete=2, total=5)
+    assert s.incomplete == 3
+    assert s.complete == 2
+    assert s.total == 5
 
 
 def test_setup(summaries):
@@ -97,5 +105,22 @@ def test_summary_object_provides_pct_complete(make_one):
 def test_store(summaries, make_one):
     """Ensure we can store summary objects."""
     s = make_one()
-    result = summaries.store(s)
+    s, result = summaries.store(s)
     assert result == summaries.SAVED
+    assert s.id
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_update(summaries, make_one):
+    """Ensure multiple calls to create on the same date return the same obj."""
+    s = make_one()
+    s, result = summaries.store(s)
+    assert result == summaries.SAVED
+    assert s.id
+
+    s2 = make_one(incomplete=1, complete=2, total=3)
+    s2, result = summaries.store(s2)
+    assert result == summaries.UPDATED
+    assert s2.id == s.id
+    assert (1, 2, 3) == (s2.incomplete, s2.complete, s2.total)

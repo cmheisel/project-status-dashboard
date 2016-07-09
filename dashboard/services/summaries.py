@@ -31,5 +31,20 @@ def store(summary_obj):
     Returns:
         str: One of summaries.SAVED or summaries.UPDATED
     """
-    summary_obj.save()
-    return SAVED
+    updated_values = dict(
+        complete=summary_obj.complete,
+        incomplete=summary_obj.incomplete,
+        total=summary_obj.total,
+    )
+
+    obj, created = ProjectSummary.objects.update_or_create(
+        filter_id=summary_obj.filter_id,
+        created_on=summary_obj.created_on,
+        defaults=updated_values
+    )
+
+    result = UPDATED
+    if created:
+        result = SAVED
+
+    return obj, result

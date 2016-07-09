@@ -9,7 +9,7 @@ reqs: venv
 	./venv/bin/pip install -r requirements.txt && touch reqs
 
 test: reqs
-	GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) ./venv/bin/$(pytest_invoke)
+	DB_FILE=":memory:" GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) ./venv/bin/$(pytest_invoke)
 
 clean_pycs:
 	find . -name "*.pyc" -exec rm -rf {} \;

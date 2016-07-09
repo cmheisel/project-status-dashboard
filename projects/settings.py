@@ -16,6 +16,7 @@ root = environ.Path(__file__) - 2
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
+    DB_FILE=(str, str(root.path('project_status_dashboard.db'))),
     REDIS_URL=(str, "redis:6379"),
     REDIS_DB=(int, 1),
     GOOGLE_SPREADSHEET_ID=(str),
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'projects.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(root.path('project_status_dashboard.db')),
+        'NAME': env('DB_FILE'),
     }
 }
 
