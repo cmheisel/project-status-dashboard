@@ -1,6 +1,7 @@
 GOOGLE_SPREADSHEET_ID ?= "fakeyfakeyfakey"
 JIRA_URL ?= "http://localhost"
 pytest_invoke = py.test -s --flake8 --cov=dashboard ./dashboard
+DOCKER_MACHINE_IP ?= $(docker-machine ip)
 DOCKER_IMAGE_NAME = "cmheisel/project-status-dashboard"
 DOCKER_IMAGE_VERSION = "v0.1"
 
@@ -42,8 +43,8 @@ release: test_docker clean clean_db clean_docker
 	docker-compose build web
 	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):latest
-	#docker push $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
-	#docker push $(DOCKER_IMAGE_NAME):latest
+	docker push $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
+	docker push $(DOCKER_IMAGE_NAME):latest
 
 
 .PHONY: test clean_pycs clean_db clean docs up clean_docker test_docker release
