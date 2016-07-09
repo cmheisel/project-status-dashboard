@@ -79,4 +79,8 @@ def summarize_query(filter_id):
     Returns:
         dict: Results from summarize_results
     """
+    try:
+        int(filter_id)
+    except ValueError:
+        return {}
     return summarize_results(fetch_query_results(filter_id))

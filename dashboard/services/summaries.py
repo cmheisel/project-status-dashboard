@@ -48,3 +48,20 @@ def store(summary_obj):
         result = SAVED
 
     return obj, result
+
+
+def for_date(filter_id, date):
+    """Find a summary with a given filter_id and date.
+
+    Args:
+        filter_id (int): The filter_id for the project in question.
+        date (Date): The date you want a summary for
+
+    Returns:
+        None: If no summary is found
+        ProjectSummary: instance that matches the date/filter combo
+    """
+    try:
+        return ProjectSummary.objects.get(filter_id=filter_id, created_on=date)
+    except ProjectSummary.DoesNotExist:
+        return None

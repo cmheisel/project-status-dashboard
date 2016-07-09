@@ -20,7 +20,7 @@ def datetime():
 
 @pytest.fixture
 def make_one(summaries):
-    """Provide an function to make an instance of the CUT"""
+    """Provide an function to make an instance of the CUT."""
     def _make_one(**kwargs):
         defaults = dict(
             filter_id=6292809552232448,
@@ -139,3 +139,30 @@ def test_update_different_filters(summaries, make_one):
     s2, result = summaries.store(s2)
     assert result == summaries.SAVED
     assert s2.id != s.id
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_for_date(summaries, make_one, datetime):
+    """Ensure we can find summaries from the past."""
+    week_ago = datetime.date.today() - relativedelta(days=7)
+
+    s1 = make_one(created_on=week_ago)
+    s2 = make_one()
+
+    s1, result = summaries.store(s1)
+    s2, result = summaries.store(s2)
+
+    s3 = summaries.for_date(filter_id=s2.filter_id, date=week_ago)
+    assert s3.id == s1.id
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_for_date_sad(summaries, make_one, datetime):
+    """Validate what happens when we can't find summaries from the past."""
+    week_ago = datetime.date.today() - relativedelta(days=7)
+
+    s1 = make_one()
+    s2 = summaries.for_date(filter_id=s1.filter_id, date=week_ago)
+    assert s2 is None
