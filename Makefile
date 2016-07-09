@@ -1,6 +1,6 @@
 GOOGLE_SPREADSHEET_ID ?= "fakeyfakeyfakey"
 JIRA_URL ?= "http://localhost"
-pytest_invoke = py.test -svv --flake8 --cov=dashboard ./dashboard
+pytest_invoke = py.test -s --flake8 --cov=dashboard ./dashboard
 
 venv:
 	virtualenv ./venv
@@ -9,16 +9,24 @@ reqs: venv
 	./venv/bin/pip install -r requirements.txt && touch reqs
 
 test: reqs
-	GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) ./venv/bin/$(pytest_invoke)
+	DB_NAME=":memory:" GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) ./venv/bin/$(pytest_invoke)
 
 clean_pycs:
 	find . -name "*.pyc" -exec rm -rf {} \;
+
+clean_db:
+	rm data/*.db
+	rm *.db
 
 clean: clean_pycs
 	rm -rf venv
 
 docs: reqs
 	cd docs && make html
+
+up:
+	docker-compose rm --all
+	docker-compose up
 
 test_docker:
 	docker-compose build web

@@ -12,16 +12,19 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import environ
-root = environ.Path(__file__) - 2  # three folder back (/a/b/c/ - 3 = /)
+root = environ.Path(__file__) - 2
+default_db_name = str(root.path('project_status_dashboard.db'))
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
+    DB_NAME=(str, default_db_name),
     REDIS_URL=(str, "redis:6379"),
     REDIS_DB=(int, 1),
     GOOGLE_SPREADSHEET_ID=(str),
     JIRA_URL=(str),
     JIRA_AUTH=(tuple, ()),
     JIRA_DONE=(list, ["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"]),
+    JIRA_SSL_VERIFY=(bool, True),
     ALLOWED_HOSTS=(list, []),
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
@@ -78,6 +81,10 @@ WSGI_APPLICATION = 'projects.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': env('DB_NAME'),
+    }
 }
 
 CACHES = {
@@ -126,3 +133,4 @@ GOOGLE_SPREADSHEET_ID = env('GOOGLE_SPREADSHEET_ID')
 JIRA_URL = env('JIRA_URL')
 JIRA_AUTH = env('JIRA_AUTH')
 JIRA_DONE = env('JIRA_DONE')
+JIRA_SSL_VERIFY = env('JIRA_SSL_VERIFY')

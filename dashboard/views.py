@@ -1,11 +1,11 @@
 import datetime
-import time
 
 from django.core.cache import cache
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.views.generic import View, TemplateView
 
-from .jobs import dashboard_data_fetch
+from .jobs import generate_dashboard
 
 
 class HealthCheck(View):
@@ -25,9 +25,13 @@ class Dashboard(TemplateView):
     def get_context_data(self, **kwargs):
         data = cache.get('dashboard_data', [])
         updated = cache.get('dashboard_data_updated', None)
-        job = dashboard_data_fetch.delay()
-        if not data:
-            while job.result is not True:
-                time.sleep(1)
         context = dict(data=data, updated=updated)
+        generate_dashboard.delay()
         return context
+
+
+class Refresh(View):
+    def get(self, request, *args, **kwargs):
+        cache.set('dashboard_data', [])
+        generate_dashboard.delay()
+        return redirect('dashboard')

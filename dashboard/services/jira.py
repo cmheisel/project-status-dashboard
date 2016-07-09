@@ -32,7 +32,7 @@ def fetch_query_results(filter_id):
         list[JIRA.Issue]: List of issue objects from query
     """
     url = query_url(filter_id)
-    results = requests.get(url, auth=settings.JIRA_AUTH).json()
+    results = requests.get(url, auth=settings.JIRA_AUTH, verify=settings.JIRA_SSL_VERIFY).json()
     return results
 
 
