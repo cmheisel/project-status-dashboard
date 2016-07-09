@@ -146,7 +146,7 @@ LOGGING = {
     },
     "handlers": {
         "rq_console": {
-            "level": "WARNING",
+            "level": "INFO",
             "class": "rq.utils.ColorizingStreamHandler",
             "formatter": "rq_console",
             "exclude": ["%(asctime)s"],
@@ -155,7 +155,7 @@ LOGGING = {
     'loggers': {
         "rq.worker": {
             "handlers": ["rq_console", ],
-            "level": "WARNING"
+            "level": "INFO"
         },
     }
 }

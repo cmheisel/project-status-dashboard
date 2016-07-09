@@ -29,6 +29,7 @@ docs: reqs
 
 up:
 	docker-compose rm --all
+	docker-compose build
 	docker-compose up
 
 clean_docker:
