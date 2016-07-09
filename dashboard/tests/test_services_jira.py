@@ -42,3 +42,9 @@ def test_summarize_results(jira, settings):
         'total': 3,
     }
     assert jira.summarize_results(issue_list) == expected
+
+
+def test_summarize_query_weird_input(jira):
+    """Return None if passed a non-int filter_id"""
+    result = jira.summarize_query("FOOBAR")
+    assert result == {}
