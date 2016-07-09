@@ -7,3 +7,7 @@ install:
 script: "make test"
 after_success:
   coveralls
+services:
+  - redis-server
+env:
+  - REDIS_URL=localhost:6379
