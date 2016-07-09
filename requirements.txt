@@ -10,8 +10,6 @@ pytz==2015.7
 python-dateutil==2.5.3
 
 
-pysqlite==2.8.2
-
 six==1.10.0
 django-environ==0.4.0
 
