@@ -21,7 +21,7 @@ def generate_dashboard():
                 incomplete=summary_data['incomplete'],
                 complete=summary_data['complete'],
                 total=summary_data['total'],
-                fetched_on=datetime.datetime.today(),
+                created_on=datetime.date.today(),
             )
             summaries.store(p)
             row.xtras['jira_summary'] = p
