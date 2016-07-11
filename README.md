@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/cmheisel/project-status-dashboard.png?label=ready&title=Ready)](https://waffle.io/cmheisel/project-status-dashboard)
 [![Build Status](https://travis-ci.org/cmheisel/project-status-dashboard.svg?branch=master)](https://travis-ci.org/cmheisel/project-status-dashboard)
 [![Coverage Status](https://coveralls.io/repos/github/cmheisel/project-status-dashboard/badge.svg?branch=master)](https://coveralls.io/github/cmheisel/project-status-dashboard?branch=master)
 
