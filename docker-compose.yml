@@ -3,8 +3,7 @@ redis:
   command: ["redis-server", "--appendonly", "yes"]
 web:
   build: .
-  #entrypoint: /app/run.sh
-  #command: /app-ve/bin/python /app/manage.py runserver 0.0.0.0:8000
+  #command: /app/projects/serve.sh
   volumes:
       - .:/app/
       - ./data:/data/
@@ -12,5 +11,6 @@ web:
     - "80:8000"
   environment:
     - DB_NAME=/data/container.db
+    - DEBUG=False
   links:
     - redis
