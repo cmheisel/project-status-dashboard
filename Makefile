@@ -1,9 +1,8 @@
 GOOGLE_SPREADSHEET_ID ?= "fakeyfakeyfakey"
 JIRA_URL ?= "http://localhost"
 pytest_invoke = py.test -s --flake8 --cov=dashboard ./dashboard
-DOCKER_MACHINE_IP ?= $(docker-machine ip)
 DOCKER_IMAGE_NAME = "cmheisel/project-status-dashboard"
-DOCKER_IMAGE_VERSION = "v0.2"
+DOCKER_IMAGE_VERSION = $(shell cat dashboard/static/dashboard/version.txt)
 
 venv:
 	virtualenv ./venv
@@ -28,7 +27,7 @@ docs: reqs
 	cd docs && make html
 
 up:
-	docker-compose rm --all
+	docker-compose rm -f --all
 	docker-compose build
 	docker-compose up
 
