@@ -18,6 +18,7 @@
 
     <!-- datatables -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -76,8 +77,10 @@
 
     <script type="text/javascript">
     $(document).ready(function() {
-      $('#projects').DataTable();
-    } );
+      $('#projects').DataTable({
+        "lengthMenu": [[-1, 5, 10, 15, 20], ["All", 5, 10, 15, 20]]
+      });
+    });
     </script>
   </body>
 </html>
