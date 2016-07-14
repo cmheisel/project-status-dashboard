@@ -34,7 +34,7 @@
       <h1>Project Dashboard</h1>
       <p class="lead">Fresh progess updates from JIRA baked daily</p>
       <small>Updated: {{ updated }}</small>
-    <table class="table table-striped table-bordered table-hover table-condensed">
+    <table class="table table-striped table-bordered table-hover table-condensed" id="projects">
         <thead class="thead">
           <tr>
           {% for key in data.0.keys %}
@@ -73,5 +73,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- datatables -->
     <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $('#projects').DataTable();
+    } );
+    </script>
   </body>
 </html>
