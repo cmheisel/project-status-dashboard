@@ -36,9 +36,13 @@ def fetch_query_results(filter_id, logger=LOGGER):
     """
     url = query_url(filter_id)
 
-    logger.info("fetch_query_results: FETCH {} as {}".format(url, settings.JIRA_AUTH[0]))
+    fetch_message = "fetch_query_results: FETCH {} as {}".format(url, settings.JIRA_AUTH[0])
+    logger.info(fetch_message)
 
     results = requests.get(url, auth=settings.JIRA_AUTH, verify=settings.JIRA_SSL_VERIFY).json()
+
+    if 'errorMessages' in results.keys():
+        logger.warning('{} produced errors: {}'.format(fetch_message, results['errorMessages']))
 
     logger.debug("fetch_query_results: RECEIVE: {}".format(results))
     return results

@@ -162,11 +162,11 @@ LOGGING = {
     'loggers': {
         "dashboard": {
             "handlers": ["console", ],
-            "level": "DEBUG",
+            "level": "WARNING",
         },
         "rq.worker": {
             "handlers": ["rq_console", ],
-            "level": "INFO"
+            "level": "WARNING"
         },
     }
 }
