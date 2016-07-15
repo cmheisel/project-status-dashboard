@@ -25,7 +25,7 @@ def query_url(filter_id, jira_url=None):
     )
 
 
-def fetch_query_results(filter_id, logger=LOGGER):
+def fetch_query_results(filter_id, requests=requests, logger=LOGGER):
     """
     Get results from JIRA.
 

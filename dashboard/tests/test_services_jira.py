@@ -1,6 +1,8 @@
 """Test dashboard.services.jira."""
 
 import pytest
+import requests_mock
+import json
 
 
 @pytest.fixture
@@ -74,3 +76,13 @@ def test_summarize_query_weird_input(jira):
     """Return None if passed a non-int filter_id."""
     result = jira.summarize_query("FOOBAR")
     assert result == {}
+
+
+def test_fetch_query_results(settings, jira):
+    """Return the results."""
+    expected = dict(foo="bar", baz="bat")
+    expected_json = json.dumps(expected)
+    with requests_mock.mock() as m:
+        m.register_uri(requests_mock.ANY, requests_mock.ANY, text=expected_json)
+        result = jira.fetch_query_results(43035)
+        assert result == expected
