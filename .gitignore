@@ -1,7 +1,6 @@
 #redis data dir
 data/
 
-#static collection point
 static/*
 
 # make-generated cruft

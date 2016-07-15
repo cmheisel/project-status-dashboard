@@ -22,6 +22,7 @@ clean_db:
 
 clean: clean_pycs
 	rm -rf venv
+	rm -rf static
 
 docs: reqs
 	cd docs && make html
