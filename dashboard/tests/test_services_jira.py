@@ -1,5 +1,7 @@
 """Test dashboard.services.jira."""
 
+from unittest.mock import patch
+
 import pytest
 import requests_mock
 import json
@@ -86,3 +88,18 @@ def test_fetch_query_results(settings, jira):
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text=expected_json)
         result = jira.fetch_query_results(43035)
         assert result == expected
+
+
+def test_fetch_query_results_with_errors(settings, jira):
+    """JIRA responses with error messages should be logged and returned."""
+    expected = dict(
+        errors=[],
+        errorMessages=["Was a boring conversation anyway... Luke we're gonna have company!", ],
+    )
+    expected_json = json.dumps(expected)
+    with requests_mock.mock() as m:
+        with patch("dashboard.services.jira.LOGGER") as mocked_logger:
+            m.register_uri(requests_mock.ANY, requests_mock.ANY, text=expected_json)
+            result = jira.fetch_query_results(43035, logger=mocked_logger)
+            assert mocked_logger.warning.called
+            assert result == expected
