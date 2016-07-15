@@ -1,17 +1,22 @@
+"""Test dashboard.services.jira."""
+
 import pytest
 
 
 @pytest.fixture
 def jira():
+    """Fixture for JIRA."""
     from ..services import jira
     return jira
 
 
 def test_setup(jira):
+    """Verify our fixture."""
     assert jira
 
 
 def test_query_url(jira):
+    """Verify explicit arg is used for URL."""
     filter_id = "12345"
     jira_url = "https://jira.purnkleen.com"
     expected = "https://jira.purnkleen.com/rest/api/2/search?jql=filter=12345&maxResults=999"
@@ -19,6 +24,7 @@ def test_query_url(jira):
 
 
 def test_query_url_w_settings(jira, settings):
+    """Verify settings used for URL implicitly."""
     filter_id = "12345"
     expected = "https://jira.purnkleen.com/rest/api/2/search?jql=filter=12345&maxResults=999"
     settings.JIRA_URL = "https://jira.purnkleen.com"
@@ -26,6 +32,7 @@ def test_query_url_w_settings(jira, settings):
 
 
 def test_summarize_results(jira, settings):
+    """Verify happy path results."""
     settings.JIRA_DONE = ['Donnager']
     issue_list = {
         'total': 3,
@@ -40,11 +47,30 @@ def test_summarize_results(jira, settings):
         'complete': 1,
         'pct_complete': 1 / 3.0,
         'total': 3,
+        'errors': [],
+    }
+    assert jira.summarize_results(issue_list) == expected
+
+
+def test_summarize_results_with_errors(jira):
+    """Pass errors upstream with 0s for values."""
+    issue_list = {
+        'errorMessages': ["A value with ID '12245' does not exist for the field 'filter'."],
+        'errors': {}
+    }
+    expected = {
+        'incomplete': 0,
+        'complete': 0,
+        'pct_complete': 0,
+        'total': 0,
+        'errors': [
+            "A value with ID '12245' does not exist for the field 'filter'.",
+        ]
     }
     assert jira.summarize_results(issue_list) == expected
 
 
 def test_summarize_query_weird_input(jira):
-    """Return None if passed a non-int filter_id"""
+    """Return None if passed a non-int filter_id."""
     result = jira.summarize_query("FOOBAR")
     assert result == {}
