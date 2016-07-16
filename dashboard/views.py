@@ -4,10 +4,9 @@ from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import View, TemplateView
-from django.utils import timezone
 
 from .jobs import generate_dashboard
-from .models import ProjectSummary
+from .services import summaries
 
 
 class HealthCheck(View):
@@ -26,10 +25,7 @@ class Dashboard(TemplateView):
 
     def get_context_data(self, **kwargs):
         data = cache.get('dashboard_data', [])
-        try:
-            updated = ProjectSummary.objects.latest().updated_at
-        except ProjectSummary.DoesNotExist:
-            updated = timezone.now()
+        updated = summaries.latest_update()
         context = dict(data=data, updated=updated)
         generate_dashboard.delay()
         return context

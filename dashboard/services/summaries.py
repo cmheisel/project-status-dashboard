@@ -82,3 +82,15 @@ def for_date(filter_id, date):
         return ProjectSummary.objects.get(filter_id=filter_id, created_on=date)
     except ProjectSummary.DoesNotExist:
         return None
+
+
+def latest_update():
+    """Retun the most recent datetime of summary updates.
+
+    Returns:
+        datetime: When the most recent ProjectSummary was updated.
+    """
+    try:
+        return ProjectSummary.objects.latest().updated_at
+    except ProjectSummary.DoesNotExist:
+        return None

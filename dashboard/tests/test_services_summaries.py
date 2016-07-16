@@ -227,3 +227,24 @@ def test_for_date_sad(summaries, make_one, datetime):
     s1 = make_one()
     s2 = summaries.for_date(filter_id=s1.filter_id, date=week_ago)
     assert s2 is None
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_latest_update(summaries, make_one, datetime):
+    """Ensure that summaries.latest_update returns the most recent updated_at."""
+    week_ago = datetime.date.today() - relativedelta(days=7)
+    s1 = make_one(created_on=week_ago)
+    s2 = make_one()
+
+    summaries.store(s1)
+    s2, result = summaries.store(s2)
+
+    assert summaries.latest_update() == s2.updated_at
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_latest_update_with_no_records(summaries, make_one):
+    """Ensure that summaries.latest_update returns None if there are no summaries."""
+    assert summaries.latest_update() is None
