@@ -17,6 +17,7 @@ class ProjectSummary(models.Model):
         verbose_name = "project summary"
         verbose_name_plural = "project summaries"
         unique_together = (("filter_id", "created_on"))
+        get_latest_by = "updated_at"
 
     @property
     def pct_complete(self):
