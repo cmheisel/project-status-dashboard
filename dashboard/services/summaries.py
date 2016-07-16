@@ -2,10 +2,25 @@
 
 import datetime
 
+from django.utils import timezone
+
 from ..models import ProjectSummary
 
 SAVED = "saved"
 UPDATED = "updated"
+
+
+def fill_updated_at(summary):
+    """Set updated_at to created_on at 11:59 pm UTC"""
+    summary.updated_at = timezone.now().replace(
+        year=summary.created_on.year,
+        month=summary.created_on.month,
+        day=summary.created_on.day,
+        hour=23,
+        minute=59,
+        second=59,
+    )
+    return summary
 
 
 def create(filter_id, complete, incomplete, total, created_on=None):
@@ -18,7 +33,8 @@ def create(filter_id, complete, incomplete, total, created_on=None):
         complete=complete,
         incomplete=incomplete,
         total=total,
-        created_on=created_on
+        created_on=created_on,
+        updated_at=timezone.now()
     )
     return p
 
@@ -35,6 +51,7 @@ def store(summary_obj):
         complete=summary_obj.complete,
         incomplete=summary_obj.incomplete,
         total=summary_obj.total,
+        updated_at=timezone.now()
     )
 
     obj, created = ProjectSummary.objects.update_or_create(
@@ -63,5 +80,17 @@ def for_date(filter_id, date):
     """
     try:
         return ProjectSummary.objects.get(filter_id=filter_id, created_on=date)
+    except ProjectSummary.DoesNotExist:
+        return None
+
+
+def latest_update():
+    """Retun the most recent datetime of summary updates.
+
+    Returns:
+        datetime: When the most recent ProjectSummary was updated.
+    """
+    try:
+        return ProjectSummary.objects.latest().updated_at
     except ProjectSummary.DoesNotExist:
         return None

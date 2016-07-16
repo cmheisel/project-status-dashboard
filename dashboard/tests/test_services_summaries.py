@@ -102,6 +102,46 @@ def test_summary_object_provides_pct_complete(make_one):
 
 @pytest.mark.system
 @pytest.mark.django_db
+def test_fill_updated_at(summaries, make_one):
+    """fill_updated_at sets the summaries updated_at to 11:59 pm."""
+    s = make_one()
+    s.updated_at = None
+
+    expected = (
+        s.created_on.year,
+        s.created_on.month,
+        s.created_on.day,
+        23,
+        59,
+        59,
+    )
+
+    s = summaries.fill_updated_at(s)
+    actual = (
+        s.updated_at.year,
+        s.updated_at.month,
+        s.updated_at.day,
+        s.updated_at.hour,
+        s.updated_at.minute,
+        s.updated_at.second
+    )
+    assert expected == actual
+    s.save()
+    s = summaries.for_date(s.filter_id, s.created_on)
+    print(s.updated_at.tzinfo)
+    actual = (
+        s.updated_at.year,
+        s.updated_at.month,
+        s.updated_at.day,
+        s.updated_at.hour,
+        s.updated_at.minute,
+        s.updated_at.second
+    )
+    assert expected == actual
+
+
+@pytest.mark.system
+@pytest.mark.django_db
 def test_store(summaries, make_one):
     """Ensure we can store summary objects."""
     s = make_one()
@@ -124,6 +164,27 @@ def test_update(summaries, make_one):
     assert result == summaries.UPDATED
     assert s2.id == s.id
     assert (1, 2, 3) == (s2.incomplete, s2.complete, s2.total)
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_updated_at(summaries, make_one):
+    """Ensure updated_at is set."""
+    from django.utils import timezone
+    s = make_one()
+    s, result = summaries.store(s)
+    now = timezone.now()
+    expected = (now.year, now.month, now.day, now.hour, now.minute, now.second)
+
+    actual = (
+        s.updated_at.year,
+        s.updated_at.month,
+        s.updated_at.day,
+        s.updated_at.hour,
+        s.updated_at.minute,
+        s.updated_at.second
+    )
+    assert expected == actual
 
 
 @pytest.mark.system
@@ -166,3 +227,24 @@ def test_for_date_sad(summaries, make_one, datetime):
     s1 = make_one()
     s2 = summaries.for_date(filter_id=s1.filter_id, date=week_ago)
     assert s2 is None
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_latest_update(summaries, make_one, datetime):
+    """Ensure that summaries.latest_update returns the most recent updated_at."""
+    week_ago = datetime.date.today() - relativedelta(days=7)
+    s1 = make_one(created_on=week_ago)
+    s2 = make_one()
+
+    summaries.store(s1)
+    s2, result = summaries.store(s2)
+
+    assert summaries.latest_update() == s2.updated_at
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_latest_update_with_no_records(summaries, make_one):
+    """Ensure that summaries.latest_update returns None if there are no summaries."""
+    assert summaries.latest_update() is None

@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.views.generic import View, TemplateView
 
 from .jobs import generate_dashboard
+from .services import summaries
 
 
 class HealthCheck(View):
@@ -24,7 +25,7 @@ class Dashboard(TemplateView):
 
     def get_context_data(self, **kwargs):
         data = cache.get('dashboard_data', [])
-        updated = cache.get('dashboard_data_updated', None)
+        updated = summaries.latest_update()
         context = dict(data=data, updated=updated)
         generate_dashboard.delay()
         return context
