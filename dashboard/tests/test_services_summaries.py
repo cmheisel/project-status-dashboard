@@ -102,6 +102,46 @@ def test_summary_object_provides_pct_complete(make_one):
 
 @pytest.mark.system
 @pytest.mark.django_db
+def test_fill_updated_at(summaries, make_one):
+    """fill_updated_at sets the summaries updated_at to 11:59 pm."""
+    s = make_one()
+    s.updated_at = None
+
+    expected = (
+        s.created_on.year,
+        s.created_on.month,
+        s.created_on.day,
+        23,
+        59,
+        59,
+    )
+
+    s = summaries.fill_updated_at(s)
+    actual = (
+        s.updated_at.year,
+        s.updated_at.month,
+        s.updated_at.day,
+        s.updated_at.hour,
+        s.updated_at.minute,
+        s.updated_at.second
+    )
+    assert expected == actual
+    s.save()
+    s = summaries.for_date(s.filter_id, s.created_on)
+    print(s.updated_at.tzinfo)
+    actual = (
+        s.updated_at.year,
+        s.updated_at.month,
+        s.updated_at.day,
+        s.updated_at.hour,
+        s.updated_at.minute,
+        s.updated_at.second
+    )
+    assert expected == actual
+
+
+@pytest.mark.system
+@pytest.mark.django_db
 def test_store(summaries, make_one):
     """Ensure we can store summary objects."""
     s = make_one()

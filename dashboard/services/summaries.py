@@ -2,10 +2,25 @@
 
 import datetime
 
+from django.utils import timezone
+
 from ..models import ProjectSummary
 
 SAVED = "saved"
 UPDATED = "updated"
+
+
+def fill_updated_at(summary):
+    """Set updated_at to created_on at 11:59 pm UTC"""
+    summary.updated_at = timezone.now().replace(
+        year=summary.created_on.year,
+        month=summary.created_on.month,
+        day=summary.created_on.day,
+        hour=23,
+        minute=59,
+        second=59,
+    )
+    return summary
 
 
 def create(filter_id, complete, incomplete, total, created_on=None):
