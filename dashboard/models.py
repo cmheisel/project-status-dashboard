@@ -11,7 +11,7 @@ class ProjectSummary(models.Model):
     complete = models.IntegerField()
     total = models.IntegerField()
     created_on = models.DateField()
-    updated_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=False)
 
     class Meta:
         verbose_name = "project summary"
