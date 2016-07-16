@@ -168,6 +168,27 @@ def test_update(summaries, make_one):
 
 @pytest.mark.system
 @pytest.mark.django_db
+def test_updated_at(summaries, make_one):
+    """Ensure updated_at is set."""
+    from django.utils import timezone
+    s = make_one()
+    s, result = summaries.store(s)
+    now = timezone.now()
+    expected = (now.year, now.month, now.day, now.hour, now.minute, now.second)
+
+    actual = (
+        s.updated_at.year,
+        s.updated_at.month,
+        s.updated_at.day,
+        s.updated_at.hour,
+        s.updated_at.minute,
+        s.updated_at.second
+    )
+    assert expected == actual
+
+
+@pytest.mark.system
+@pytest.mark.django_db
 def test_update_different_filters(summaries, make_one):
     """Ensure multiple calls to create on the same date/diff filter return the same obj."""
     s = make_one(filter_id=1234)

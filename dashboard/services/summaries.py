@@ -33,7 +33,8 @@ def create(filter_id, complete, incomplete, total, created_on=None):
         complete=complete,
         incomplete=incomplete,
         total=total,
-        created_on=created_on
+        created_on=created_on,
+        updated_at=timezone.now()
     )
     return p
 
@@ -50,6 +51,7 @@ def store(summary_obj):
         complete=summary_obj.complete,
         incomplete=summary_obj.incomplete,
         total=summary_obj.total,
+        updated_at=timezone.now()
     )
 
     obj, created = ProjectSummary.objects.update_or_create(
