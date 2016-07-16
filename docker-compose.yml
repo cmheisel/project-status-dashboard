@@ -11,6 +11,6 @@ web:
     - "80:8000"
   environment:
     - DB_NAME=/data/container.db
-    - DEBUG=False
+    - DEBUG=True
   links:
     - redis

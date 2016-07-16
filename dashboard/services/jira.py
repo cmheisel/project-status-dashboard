@@ -1,8 +1,11 @@
 """Functions and classes for interacting with JIRA."""
+import logging
 
 import requests
 
 from django.conf import settings
+
+LOGGER = logging.getLogger("dashboard.services.jira")
 
 
 def query_url(filter_id, jira_url=None):
@@ -22,7 +25,7 @@ def query_url(filter_id, jira_url=None):
     )
 
 
-def fetch_query_results(filter_id):
+def fetch_query_results(filter_id, requests=requests, logger=LOGGER):
     """
     Get results from JIRA.
 
@@ -32,7 +35,16 @@ def fetch_query_results(filter_id):
         list[JIRA.Issue]: List of issue objects from query
     """
     url = query_url(filter_id)
+
+    fetch_message = "fetch_query_results: FETCH {} as {}".format(url, settings.JIRA_AUTH[0])
+    logger.info(fetch_message)
+
     results = requests.get(url, auth=settings.JIRA_AUTH, verify=settings.JIRA_SSL_VERIFY).json()
+
+    if 'errorMessages' in results.keys():
+        logger.warning('{} produced errors: {}'.format(fetch_message, results['errorMessages']))
+
+    logger.debug("fetch_query_results: RECEIVE: {}".format(results))
     return results
 
 
@@ -57,7 +69,13 @@ def summarize_results(results):
         'complete': 0,
         'pct_complete': 0,
         'total': 0,
+        'errors': [],
     }
+    summary['errors'] = results.get('errorMessages', [])
+    if summary['errors']:
+        #  Short circuit
+        return summary
+
     total = results['total']
     for issue in results['issues']:
         if issue['fields']['status']['name'] in settings.JIRA_DONE:

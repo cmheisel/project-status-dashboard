@@ -149,6 +149,9 @@ LOGGING = {
         },
     },
     "handlers": {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
         "rq_console": {
             "level": "INFO",
             "class": "rq.utils.ColorizingStreamHandler",
@@ -157,9 +160,13 @@ LOGGING = {
         },
     },
     'loggers': {
+        "dashboard": {
+            "handlers": ["console", ],
+            "level": "WARNING",
+        },
         "rq.worker": {
             "handlers": ["rq_console", ],
-            "level": "INFO"
+            "level": "WARNING"
         },
     }
 }
