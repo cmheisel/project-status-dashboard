@@ -1,3 +1,5 @@
+"""Database models for dashboard app."""
+
 from django.db import models
 
 
@@ -9,6 +11,7 @@ class ProjectSummary(models.Model):
     complete = models.IntegerField()
     total = models.IntegerField()
     created_on = models.DateField()
+    updated_at = models.DateTimeField(null=True)
 
     class Meta:
         verbose_name = "project summary"
@@ -17,4 +20,9 @@ class ProjectSummary(models.Model):
 
     @property
     def pct_complete(self):
+        """How complete is the project.
+
+        Returns:
+            float: Percentage of the project that is complete.
+        """
         return self.complete / float(self.total)
