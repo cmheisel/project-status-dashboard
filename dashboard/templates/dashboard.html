@@ -39,19 +39,13 @@
         <thead class="thead">
           <tr>
           {% for key in data.0.keys %}
-              <th>{{ key }}</th>
+              <th rowspan="2">{{ key }}</th>
           {% endfor %}
-              <th data-orderable="false" data-search="false">JIRA</th>
-              <th data-orderable="false" data-search="false" colspan="2">
-                Today
-              </th>
+              <th data-orderable="false" data-search="false" rowspan="2">JIRA</th>
+              <th data-orderable="false" data-search="false" colspan="2">Today</th>
               <th data-orderable="false" data-search="false" colspan="2">Last week</th>
           </tr>
           <tr>
-            {% for key in data.0.keys %}
-                <th>&nbsp;</th>
-            {% endfor %}
-            <th>&nbsp;</th>
             <th>Complete</th>
             <th>Scope</th>
             <th>Complete</th>
