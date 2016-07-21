@@ -4,8 +4,6 @@ from collections import namedtuple
 
 import pytest
 
-from pretend import stub
-
 
 @pytest.fixture()
 def ReportStub():
@@ -51,16 +49,13 @@ def test_progress_report_no_current(progress_report):
     assert actual == expected
 
 
-def test_progress_report_no_previous(progress_report):
+def test_progress_report_no_previous(progress_report, ReportStub):
     """No previous displays defaults."""
-    current_values = dict(
+    current_report = ReportStub(
         incomplete=5,
         complete=10,
         total=15,
         pct_complete=10 / 15
-    )
-    current_report = stub(
-        **current_values
     )
     previous_report = None
     expected = {
@@ -70,13 +65,7 @@ def test_progress_report_no_previous(progress_report):
         'complete_change': None,
     }
 
-    actual = progress_report(current_report, previous_report)
-    for key in expected:
-        if key == 'current':
-            for k, v in current_values.items():
-                assert getattr(actual[key], k) == v, "Mismatch on actual[{}].{}".format(key, k)
-        else:
-            assert actual[key] == expected[key]
+    assert expected == progress_report(current_report, previous_report)
 
 
 def test_progress_report_current_and_previous(progress_report, ReportStub):

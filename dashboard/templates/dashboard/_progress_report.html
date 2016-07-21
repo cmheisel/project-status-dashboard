@@ -1,5 +1,8 @@
 {% load dashboard_tags %}{% spaceless %}
 {% if current %}
-{% if complete_change %}<span class="glyphicon glyphicon-chevron-{{ complete_change }}"></span>{% endif %}{{ current.pct_complete|percentage }} of {% if scope_change %}<span class="glyphicon glyphicon-chevron-{{ scope_change }}"></span>{% endif %}{{ current.total }}
+  <td>{{ current.pct_complete|percentage }}{% if complete_change %}<span class="glyphicon glyphicon-arrow-{{ complete_change }}"></span>{% endif %}</td>
+  <td>{{ current.total }}{% if scope_change %}<span class="glyphicon glyphicon-arrow-{{ scope_change }}"></span>{% endif %}</td>
+{% else %}
+  <td>&nbsp;</td><td>&nbsp;</td>
 {% endif %}
 {% endspaceless %}
