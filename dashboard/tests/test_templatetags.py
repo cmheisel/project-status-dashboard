@@ -62,7 +62,7 @@ def test_progress_report_no_previous(progress_report, ReportStub):
         incomplete=5,
         complete=10,
         total=15,
-        pct_complete=10 / 15
+        pct_complete=10 / 15.0
     )
     previous_report = None
     expected = {
@@ -81,13 +81,13 @@ def test_progress_report_current_and_previous(progress_report, ReportStub):
         incomplete=5,
         complete=10,
         total=15,
-        pct_complete=10 / 15
+        pct_complete=10 / 15.0
     )
     previous_report = ReportStub(
         incomplete=20,
         complete=10,
         total=30,
-        pct_complete=10 / 30
+        pct_complete=10 / 30.0
     )
 
     expected = {
