@@ -16,8 +16,8 @@ def progress_report(current, previous):
     context = {
         'current': current,
         'previous': previous,
-        'scope_change': '',
-        'complete_change': '',
+        'scope_change': None,
+        'complete_change': None,
     }
 
     if current and previous:
