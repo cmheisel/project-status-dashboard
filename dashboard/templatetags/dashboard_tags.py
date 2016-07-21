@@ -12,4 +12,23 @@ def percentage(value):
 @register.inclusion_tag('dashboard/_progress_report.html')
 def progress_report(current, previous):
     """Display the change in progress from previous to current."""
-    return {'current': current, 'previous': previous}
+
+    context = {
+        'current': current,
+        'previous': previous,
+        'scope_change': '',
+        'complete_change': '',
+    }
+
+    if current and previous:
+        if current.total < previous.total:
+            context['scope_change'] = 'down'
+        elif current.total > previous.total:
+            context['scope_change'] = 'up'
+
+        if current.pct_complete < previous.pct_complete:
+            context['complete_change'] = 'down'
+        elif current.pct_complete > previous.pct_complete:
+            context['complete_change'] = 'up'
+
+    return context

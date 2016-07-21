@@ -49,7 +49,7 @@ def test_render_template(render_template):
 
 
 def test_progress_report_no_previous(render_template):
-    """Check the output of progress_report."""
+    """No previous displays defaults."""
     current_report = stub(
         incomplete=5,
         complete=10,
@@ -57,7 +57,7 @@ def test_progress_report_no_previous(render_template):
         pct_complete=10 / 15
     )
     previous_report = None
-    expected = "66.7% (10/15)"
+    expected = "66.7% of 15"
 
     t = r"""{% load dashboard_tags %}{% progress_report current previous %}"""
     c = dict(current=current_report, previous=previous_report)
@@ -65,10 +65,31 @@ def test_progress_report_no_previous(render_template):
 
 
 def test_progress_report_no_current(render_template):
-    """Check the output of progress_report."""
+    """No current returns blank"""
     current_report = ""
     previous_report = ""
     expected = ""
+
+    t = r"""{% load dashboard_tags %}{% progress_report current previous %}"""
+    c = dict(current=current_report, previous=previous_report)
+    assert render_template(t, c).strip() == expected
+
+
+def test_progress_report_current_and_previous(render_template):
+    """Prevous and current return the enhanced display."""
+    current_report = stub(
+        incomplete=5,
+        complete=10,
+        total=15,
+        pct_complete=10 / 15
+    )
+    previous_report = stub(
+        incomplete=20,
+        complete=10,
+        total=30,
+        pct_complete=10 / 30
+    )
+    expected = """<span class="glyphicon glyphicon-chevron-up"></span>66.7% of <span class="glyphicon glyphicon-chevron-down"></span>15"""
 
     t = r"""{% load dashboard_tags %}{% progress_report current previous %}"""
     c = dict(current=current_report, previous=previous_report)

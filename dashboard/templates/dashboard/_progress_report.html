@@ -1,5 +1,5 @@
 {% load dashboard_tags %}{% spaceless %}
 {% if current %}
-  {{ current.pct_complete|percentage }} ({{ current.complete }}/{{ current.total }})
+{% if complete_change %}<span class="glyphicon glyphicon-chevron-{{ complete_change }}"></span>{% endif %}{{ current.pct_complete|percentage }} of {% if scope_change %}<span class="glyphicon glyphicon-chevron-{{ scope_change }}"></span>{% endif %}{{ current.total }}
 {% endif %}
 {% endspaceless %}
