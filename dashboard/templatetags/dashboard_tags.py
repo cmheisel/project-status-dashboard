@@ -9,6 +9,12 @@ def percentage(value):
     return format(value, ".1%")
 
 
+@register.simple_tag
+def google_sheet_url():
+    from django.conf import settings
+    return """https://docs.google.com/spreadsheets/d/{}/edit#gid=0""".format(settings.GOOGLE_SPREADSHEET_ID)
+
+
 @register.inclusion_tag('dashboard/_progress_report.html')
 def progress_report(current, previous):
     """Display the change in progress from previous to current."""

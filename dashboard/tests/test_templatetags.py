@@ -12,6 +12,13 @@ def ReportStub():
     return ReportStub
 
 
+@pytest.fixture()
+def google_sheet_url():
+    """Return the google_sheet_url function."""
+    from ..templatetags.dashboard_tags import google_sheet_url
+    return google_sheet_url
+
+
 @pytest.fixture
 def percentage_filter():
     """Return the percentage filter."""
@@ -91,3 +98,11 @@ def test_progress_report_current_and_previous(progress_report, ReportStub):
     }
 
     assert expected == progress_report(current_report, previous_report)
+
+
+def test_google_sheet_url(settings, google_sheet_url):
+    """Check the URL returned is proper."""
+    settings.GOOGLE_SPREADSHEET_ID = "TESTMCTESTTEST"
+
+    expected = """https://docs.google.com/spreadsheets/d/{}/edit#gid=0""".format(settings.GOOGLE_SPREADSHEET_ID)
+    assert expected == google_sheet_url()

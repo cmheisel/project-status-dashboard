@@ -33,8 +33,8 @@
       <div class="col-md-1">&nbsp;</div>
     <div class="col-md-10">
       <h1>Project Dashboard</h1>
-      <p class="lead">Fresh progess updates from JIRA baked daily</p>
-      <small>Updated: {{ updated }}</small>
+      <p class="lead">Fresh progess updates from JIRA</p>
+      <small><a href="{% google_sheet_url %}" title="Edit this table">Edit <span class="glyphicon glyphicon-edit"></span></a> || Updated: {{ updated }}</small>
     <table class="table table-striped table-bordered table-hover table-condensed" id="projects">
         <thead class="thead">
           <tr>
@@ -61,7 +61,7 @@
                 {% endfor %}
                 <td>
                   {% if row.xtras.jira_summary %}
-                    <a href="{{ JIRA_URL }}/secure/IssueNavigator.jspa?mode=hide&amp;requestId={{ row.xtras.jira_summary.filter_id }}" title="View JIRA filter"><span class="glyphicon glyphicon-th-list"></span></a>
+                    <a href="{{ JIRA_URL }}/secure/IssueNavigator.jspa?mode=hide&amp;requestId={{ row.xtras.jira_summary.filter_id }}" title="View JIRA filter"><span class="glyphicon glyphicon-filter"></span></a>
                   {% endif %}
                 </td>
                 {% if row.xtras.jira_summary_errors %}
