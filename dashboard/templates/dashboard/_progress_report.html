@@ -1,0 +1,5 @@
+{% load dashboard_tags %}{% spaceless %}
+{% if current %}
+  {{ current.pct_complete|percentage }} ({{ current.complete }}/{{ current.total }})
+{% endif %}
+{% endspaceless %}

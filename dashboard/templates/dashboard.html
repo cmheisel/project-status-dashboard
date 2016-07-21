@@ -58,9 +58,9 @@
                   {% endif %}
                 </td>
                 <td {% if row.xtras.jira_summary_errors %}class="danger"{% endif %}>
-                    {% if row.xtras.jira_summary %}
-                      {{ row.xtras.jira_summary.pct_complete|percentage }} ({{ row.xtras.jira_summary.complete }}/{{ row.xtras.jira_summary.total }})
-                    {% endif %}
+                    {% with current=row.xtras.jira_summary previous=row.xtras.week_ago_summary %}
+                    {% progress_report current previous %}
+                    {% endwith %}
                     {% if row.xtras.jira_summary_errors %}
                       <dl>
                         <dt>Errors:</dt>
@@ -71,9 +71,9 @@
                     {% endif %}
                 </td>
                 <td>
-                  {% if row.xtras.week_ago_summary %}
-                        {{ row.xtras.week_ago_summary.pct_complete|percentage }} ({{ row.xtras.week_ago_summary.complete }}/{{ row.xtras.week_ago_summary.total }})
-                  {% endif %}
+                  {% with current=row.xtras.week_ago_summary previous=None %}
+                  {% progress_report current previous %}
+                  {% endwith %}
                 </td>
             </tr>
         {% endfor %}
