@@ -18,7 +18,7 @@ def generate_dashboard():
     for row in data:
         if row.xtras.get('_jira_filter'):
             summary_data = jira.summarize_query(row.xtras['_jira_filter'])
-            if summary_data['errors']:
+            if summary_data.get('errors', []):
                 row.xtras['jira_summary_errors'] = summary_data['errors']
             elif summary_data:
                 p = summaries.create(

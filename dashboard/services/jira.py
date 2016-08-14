@@ -76,6 +76,10 @@ def summarize_results(results):
         #  Short circuit
         return summary
 
+    if results.get('total', 0) == 0:
+        # Short circuit
+        return summary
+
     total = results['total']
     for issue in results['issues']:
         if issue['fields']['status']['name'] in settings.JIRA_DONE:
