@@ -26,4 +26,6 @@ class ProjectSummary(models.Model):
         Returns:
             float: Percentage of the project that is complete.
         """
+        if self.total == 0:
+            return float(0)
         return self.complete / float(self.total)

@@ -96,8 +96,19 @@ def test_summary_object_provides_pct_complete(make_one):
         complete=4,
         total=6
     )
-    s = make_one()
+    s = make_one(**kwargs)
     assert s.pct_complete == kwargs['complete'] / float(kwargs['total'])
+
+
+def test_summary_object_provides_pct_complete_with_0_length(make_one):
+    """A summary object provides a percent complete."""
+    kwargs = dict(
+        incomplete=0,
+        complete=0,
+        total=0
+    )
+    s = make_one(**kwargs)
+    assert s.pct_complete == 0
 
 
 @pytest.mark.system
