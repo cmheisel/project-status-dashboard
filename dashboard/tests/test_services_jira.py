@@ -77,6 +77,22 @@ def test_summarize_results_with_errors(jira):
     assert jira.summarize_results(issue_list) == expected
 
 
+def test_summarize_results_with_zero_results(jira):
+    """Pass 0s upstream for filters with no results."""
+    issue_list = {
+        'total': 0,
+        'issues': []
+    }
+    expected = {
+        'incomplete': 0,
+        'complete': 0,
+        'pct_complete': 0,
+        'total': 0,
+        'errors': [],
+    }
+    assert jira.summarize_results(issue_list) == expected
+
+
 def test_summarize_query_weird_input(jira):
     """Return None if passed a non-int filter_id."""
     result = jira.summarize_query("FOOBAR")
