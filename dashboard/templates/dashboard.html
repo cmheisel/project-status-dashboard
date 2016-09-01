@@ -100,14 +100,17 @@
     <script type="text/javascript">
     $(document).ready(function() {
       var hash = window.location.hash;
+      console.log(hash);
       $('#projects').DataTable({
         "lengthMenu": [[-1, 5, 10, 15, 20], ["All", 5, 10, 15, 20]]
       });
       if (hash){
-        $('#projects').DataTable().search(hash).draw();
+        var hash_value = decodeURIComponent(hash.replace('#', ''));
+        $('#projects').DataTable().search(hash_value).draw();
       }
       $('#projects_filter input').on('keyup', function(){
-        window.location.hash = this.value;
+        var new_hash = encodeURIComponent(this.value);
+        window.location.hash = new_hash;
       })
     });
     </script>
