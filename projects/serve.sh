@@ -12,6 +12,6 @@ else
   exec /app-ve/bin/gunicorn projects.wsgi:application \
       --name dashboard \
       --bind 0.0.0.0:8000 \
-      --workers 3 \
+      --workers $GUNICORN_WORKERS \
       --log-level=info
 fi
