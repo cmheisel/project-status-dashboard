@@ -12,5 +12,6 @@ web:
   environment:
     - DB_NAME=/data/container.db
     - DEBUG=True
+    - GUNICORN_WORKERS=10
   links:
     - redis
