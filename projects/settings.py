@@ -166,7 +166,12 @@ LOGGING = {
             "formatter": "simple",
             "level": "INFO",
         },
-        "dashboard": {
+        "rq.worker": {
+            "handlers": ["console", ],
+            "formatter": "simple",
+            "level": "INFO",
+        },
+        "rq.scheduler": {
             "handlers": ["console", ],
             "formatter": "simple",
             "level": "INFO",
@@ -174,7 +179,7 @@ LOGGING = {
         "dashboard.services.jira": {
             "handlers": ["console", ],
             "formatter": "simple",
-            "level": "INFO"
+            "level": "WARNING"
         },
         'requests': {
             # The requests library is too verbose in it's logging, reducing the verbosity in our logs.
