@@ -1,9 +1,8 @@
 redis:
   image: redis:3.0.7-alpine
-  command: ["redis-server", "--appendonly", "yes"]
 web:
   build: .
-  #command: /app/projects/serve.sh
+  command: /app/projects/serve.sh
   volumes:
       - .:/app/
       - ./data:/data/
@@ -11,7 +10,31 @@ web:
     - "80:8000"
   environment:
     - DB_NAME=/data/container.db
-    - DEBUG=True
+    - DEBUG=False
     - GUNICORN_WORKERS=10
+  links:
+    - redis
+rqworker:
+  build: .
+  command: /app/run.sh /app-ve/bin/python /app/manage.py rqworker default
+  environment:
+    - DB_NAME=/data/container.db
+    - DEBUG=False
+    - GUNICORN_WORKERS=10
+  volumes:
+      - .:/app/
+      - ./data:/data/
+  links:
+    - redis
+rqscheduler:
+  build: .
+  command: /app/run.sh /app-ve/bin/python /app/manage.py rqscheduler default
+  environment:
+    - DB_NAME=/data/container.db
+    - DEBUG=False
+    - GUNICORN_WORKERS=10
+  volumes:
+      - .:/app/
+      - ./data:/data/
   links:
     - redis
