@@ -13,5 +13,5 @@ else
       --name dashboard \
       --bind 0.0.0.0:8000 \
       --workers $GUNICORN_WORKERS \
-      --log-level=info
+      --log-level=warning
 fi
