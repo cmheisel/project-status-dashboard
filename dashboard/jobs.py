@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from dateutil.relativedelta import relativedelta
 
@@ -10,9 +11,12 @@ from django_rq import job
 
 from .services import sheets, jira, summaries
 
+logger = logging.getLogger("dashboard")
+
 
 @job
 def generate_dashboard():
+    logger.info("generate_dashboard fired")
     sheet_id = settings.GOOGLE_SPREADSHEET_ID
     data = sheets.load_sheet(sheet_id)
     for row in data:

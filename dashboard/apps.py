@@ -17,7 +17,7 @@ class DashboardConfig(AppConfig):
         scheduler.schedule(
             scheduled_time=datetime.utcnow(),
             func='dashboard.jobs.generate_dashboard',
-            interval=10 * 60,
+            interval=5 * 60,
             result_ttl=0
         )
         return True
