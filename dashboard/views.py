@@ -27,7 +27,6 @@ class Dashboard(TemplateView):
         data = cache.get('dashboard_data', [])
         updated = summaries.latest_update()
         context = dict(data=data, updated=updated)
-        generate_dashboard.delay()
         return context
 
 

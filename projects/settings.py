@@ -143,7 +143,7 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "rq_console": {
+        "simple": {
             "format": "%(asctime)s %(message)s",
             "datefmt": "%H:%M:%S",
         },
@@ -151,22 +151,46 @@ LOGGING = {
     "handlers": {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
         "rq_console": {
             "level": "INFO",
             "class": "rq.utils.ColorizingStreamHandler",
-            "formatter": "rq_console",
+            "formatter": "simple",
             "exclude": ["%(asctime)s"],
         },
     },
     'loggers': {
         "dashboard": {
             "handlers": ["console", ],
-            "level": "WARNING",
+            "formatter": "simple",
+            "level": "INFO",
         },
         "rq.worker": {
-            "handlers": ["rq_console", ],
+            "handlers": ["console", ],
+            "formatter": "simple",
+            "level": "INFO",
+        },
+        "rq.scheduler": {
+            "handlers": ["console", ],
+            "formatter": "simple",
+            "level": "INFO",
+        },
+        "dashboard.services.jira": {
+            "handlers": ["console", ],
+            "formatter": "simple",
             "level": "WARNING"
+        },
+        'requests': {
+            # The requests library is too verbose in it's logging, reducing the verbosity in our logs.
+            'handlers': ["console", ],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        'urllib3': {
+            'handers': ["console", ],
+            'level': 'WARNING',
+            'propagate': True
         },
     }
 }
