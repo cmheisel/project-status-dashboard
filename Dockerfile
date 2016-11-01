@@ -1,4 +1,5 @@
 FROM debian:jessie
+MAINTAINER chris@heisel.org
 
 RUN apt-get update -y && apt-get install -y \
     python3 \
