@@ -16,7 +16,7 @@ django-environ==0.4.0
 
 requests==2.9.1
 
-better-project-forecast==0.0.3
+better-project-forecast==0.0.5
 
 gunicorn==19.6.0
 whitenoise==3.2
