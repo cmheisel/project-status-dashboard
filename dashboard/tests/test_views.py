@@ -29,3 +29,11 @@ def test_refresh(rf, views, monkeypatch):
     assert mock_cache.set.called_with('dashboard_data', [])
     assert mock_generate_dashboard.delay.call_count == 1
     assert response.status_code == 302
+
+
+@pytest.mark.django_db
+@pytest.mark.system
+def test_dashboard(rf, views):
+    request = rf.get('/')
+    response = views.Dashboard.as_view()(request)
+    assert response.status_code == 200
