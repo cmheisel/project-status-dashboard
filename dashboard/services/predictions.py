@@ -26,7 +26,7 @@ def forecast(throughputs, backlog_size, num_simulations=10000, seed=None):
     Returns:
         List[int]: The 50th, 80th, and 90th percentile # of periods remaining in the project
     """
-    results = Forecaster().forecast(throughputs, backlog_size, num_simulations, seed)
+    results = Forecaster().forecast(throughputs, backlog_size, num_simulations=num_simulations, seed=seed)
     return [results.percentile(50), results.percentile(80), results.percentile(90)]
 
 

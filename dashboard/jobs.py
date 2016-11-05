@@ -43,8 +43,12 @@ def generate_dashboard():
                 week_ago_summary = summaries.for_date(filter_id=p.filter_id, date=week_ago)
                 row.xtras['week_ago_summary'] = week_ago_summary
                 logger.debug("week_ago filter {} summary retrieved".format(p.filter_id))
-                row.xtras['predictions'] = predictions.for_project(filter_id=p.filter_id, backlog_size=p.incomplete, start_date=two_weeks_ago)
-                logger.debug("filter {} predictions created".format(p.filter_id))
+                try:
+                    row.xtras['predictions'] = predictions.for_project(filter_id=p.filter_id, backlog_size=p.incomplete, start_date=two_weeks_ago)
+                except ValueError as e:
+                    logger.warn("Filter {} predictions error: {}".format(p.filter_id, str(e)))
+                    row.xtras['predictions'] = []
+                logger.debug("Filter {} predictions created".format(p.filter_id))
     cache.set('dashboard_data', data, None)
     cache.set('dashboard_data_updated', datetime.datetime.now(get_default_timezone()), None)
     logger.info("End")
