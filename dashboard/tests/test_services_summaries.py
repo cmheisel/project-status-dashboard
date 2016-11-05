@@ -269,8 +269,10 @@ def test_for_date_range(summaries, make_one, datetime):
 
     s1 = make_one(created_on=week_ago)
     s2 = make_one()
+    s3 = make_one(filter_id=111)
 
     s2, result = summaries.store(s2)
+    s3, result = summaries.store(s3)
     s1, result = summaries.store(s1)
 
     past_summaries = summaries.for_date_range(filter_id=s2.filter_id, start_date=week_ago, end_date=s2.created_on)

@@ -96,6 +96,7 @@ def for_date_range(filter_id, start_date, end_date=None):
     if end_date is None:
         end_date = datetime.date.today()
     return ProjectSummary.objects.filter(
+        filter_id=filter_id,
         created_on__gte=start_date,
         created_on__lte=end_date,
     ).order_by('created_on')
