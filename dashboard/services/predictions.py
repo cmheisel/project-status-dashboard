@@ -1,6 +1,10 @@
+import logging
+
 from better.lib import Forecaster
 
 from .summaries import for_date_range
+
+logger = logging.getLogger('dashboard.services.pedictions')
 
 
 def throughput_history(summaries):
@@ -12,7 +16,9 @@ def throughput_history(summaries):
     """
     history = []
     for i in range(len(summaries)-1):
-        history.append(summaries[i+1].complete - summaries[i].complete)
+        throughput = summaries[i+1].complete - summaries[i].complete
+        if throughput < 0: throughput = 0
+        history.append(throughput)
     return history
 
 
@@ -39,6 +45,9 @@ def for_project(filter_id, backlog_size, start_date):
     Returns:
         List[int]: The 50th, 80th, and 90th percentile # of periods remaining in the project
     """
+    logger.debug("for_project: {}, {}, {}".format(filter_id, backlog_size, start_date))
     summaries = for_date_range(filter_id, start_date)
+    logger.debug("for_Project: {} -- summaries {}".format(filter_id, [s.complete for s in summaries]))
     throughputs = throughput_history(summaries)
+    logger.debug("for_project: {} -- throughputs: {}".format(filter_id, throughputs))
     return forecast(throughputs, backlog_size)

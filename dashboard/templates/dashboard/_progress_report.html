@@ -1,6 +1,6 @@
 {% load dashboard_tags %}{% spaceless %}
 {% if current %}
-  <td data-order="{{ current.pct_complete }}">{{ current.pct_complete|percentage }}{% if complete_change %}<span class="glyphicon glyphicon-arrow-{{ complete_change }}"></span>{% endif %}</td>
+  <td data-order="{{ current.pct_complete }}">{{ current.pct_complete|percentage }} ({{ current.complete }}){% if complete_change %}<span class="glyphicon glyphicon-arrow-{{ complete_change }}"></span>{% endif %}</td>
   <td data-order="{{ current.total }}">{{ current.total }}{% if scope_change %}<span class="glyphicon glyphicon-arrow-{{ scope_change }}"></span>{% endif %}</td>
 {% else %}
   <td>&nbsp;</td><td>&nbsp;</td>
