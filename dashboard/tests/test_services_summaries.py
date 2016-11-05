@@ -259,3 +259,21 @@ def test_latest_update(summaries, make_one, datetime):
 def test_latest_update_with_no_records(summaries, make_one):
     """Ensure that summaries.latest_update returns None if there are no summaries."""
     assert summaries.latest_update() is None
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_for_date_range(summaries, make_one, datetime):
+    """Ensure we can find many summaries from the past."""
+    week_ago = datetime.date.today() - relativedelta(days=7)
+
+    s1 = make_one(created_on=week_ago)
+    s2 = make_one()
+
+    s2, result = summaries.store(s2)
+    s1, result = summaries.store(s1)
+
+    past_summaries = summaries.for_date_range(filter_id=s2.filter_id, start_date=week_ago, end_date=s2.created_on)
+    assert 2 == len(past_summaries)
+    assert past_summaries[0] == s1
+    assert past_summaries[1] == s2

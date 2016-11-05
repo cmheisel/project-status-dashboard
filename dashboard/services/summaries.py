@@ -84,6 +84,23 @@ def for_date(filter_id, date):
         return None
 
 
+def for_date_range(filter_id, start_date, end_date=None):
+    """Find all the summaries for a given filter_id and a date range.
+    Args:
+        filter_id (int): The filter_id for the project in question.
+        start_date (Date): The start of the range you want summaries for
+        end_date (Date[today]): The end of the range you want summaries for, default: today
+    Returns:
+        List[ProjectSummary]: 0 or more project summaries for that filter in the range
+    """
+    if end_date is None:
+        end_date = datetime.date.today()
+    return ProjectSummary.objects.filter(
+        created_on__gte=start_date,
+        created_on__lte=end_date,
+    ).order_by('created_on')
+
+
 def latest_update():
     """Retun the most recent datetime of summary updates.
 
