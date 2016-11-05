@@ -275,7 +275,7 @@ def test_for_date_range(summaries, make_one, datetime):
     s3, result = summaries.store(s3)
     s1, result = summaries.store(s1)
 
-    past_summaries = summaries.for_date_range(filter_id=s2.filter_id, start_date=week_ago, end_date=s2.created_on)
+    past_summaries = summaries.for_date_range(filter_id=s2.filter_id, start_date=week_ago)
     assert 2 == len(past_summaries)
     assert past_summaries[0] == s1
     assert past_summaries[1] == s2
