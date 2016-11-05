@@ -15,6 +15,7 @@ test: reqs
 
 clean_pycs:
 	find . -name "*.pyc" -exec rm -rf {} \;
+	find . -name "__pycache__" -exec rm -rf {} \;
 
 clean_db:
 	rm -f data/*.db
