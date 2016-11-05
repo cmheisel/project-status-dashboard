@@ -1,6 +1,6 @@
 GOOGLE_SPREADSHEET_ID ?= "fakeyfakeyfakey"
 JIRA_URL ?= "http://localhost"
-pytest_invoke = py.test -vvs --flake8 --cov=dashboard ./dashboard
+pytest_invoke = py.test -vvs --flake8 --cov-report html --cov=dashboard ./dashboard
 DOCKER_IMAGE_NAME = "cmheisel/project-status-dashboard"
 DOCKER_IMAGE_VERSION = $(shell cat dashboard/static/dashboard/version.txt)
 
