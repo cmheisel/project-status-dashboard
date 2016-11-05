@@ -17,7 +17,8 @@ def throughput_history(summaries):
     history = []
     for i in range(len(summaries)-1):
         throughput = summaries[i+1].complete - summaries[i].complete
-        if throughput < 0: throughput = 0
+        if throughput < 0:
+            throughput = 0
         history.append(throughput)
     return history
 

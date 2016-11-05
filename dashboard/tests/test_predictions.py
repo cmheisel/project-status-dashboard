@@ -1,6 +1,9 @@
 """Test dashboard.services.summaries."""
+import datetime
 
 import pytest
+
+from dateutil.relativedelta import relativedelta
 
 
 def test_batman():
@@ -96,6 +99,29 @@ def test_throughput_history(predictions, make_summaries):
     assert expected_throughput_history == predictions.throughput_history(summaries)
 
 
+def test_throughput_history_negative(predictions, make_summary):
+    s1 = make_summary(complete=0, incomplete=5, total=5)
+    s2 = make_summary(complete=3, incomplete=2, total=5)
+    s3 = make_summary(complete=2, incomplete=2, total=4)
+
+    assert [3, 0] == predictions.throughput_history([s1, s2, s3])
+
+
 def test_predict(predictions):
     throughput_history = [1, 1, 0, 1, 1, 0, 1, 1, 0]
     assert [15, 17, 19] == predictions.forecast(throughput_history, 10, seed=1)
+
+
+def test_for_project(predictions, monkeypatch, make_summaries):
+    backlog_start = 10
+
+    def _mock_for_date_range(filter_id, start_date):
+        zero_work_modulo = 3
+        step = 1
+        summaries = make_summaries(backlog_start, step, zero_work_modulo)
+        return summaries
+    monkeypatch.setattr(predictions, "for_date_range", _mock_for_date_range)
+
+    start_date = datetime.date.today() - relativedelta(days=14)
+
+    assert [15, 17, 19] == predictions.for_project(1111, 10, start_date)
