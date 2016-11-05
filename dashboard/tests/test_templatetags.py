@@ -100,6 +100,31 @@ def test_progress_report_current_and_previous(progress_report, ReportStub):
     assert expected == progress_report(current_report, previous_report)
 
 
+def test_progress_report_current_and_previous_swap(progress_report, ReportStub):
+    """Prevous and current return the enhanced display."""
+    current_report = ReportStub(
+        incomplete=19,
+        complete=11,
+        total=30,
+        pct_complete=11 / 30.0
+    )
+    previous_report = ReportStub(
+        incomplete=10,
+        complete=10,
+        total=20,
+        pct_complete=10 / 20.0
+    )
+
+    expected = {
+        'current': current_report,
+        'previous': previous_report,
+        'scope_change': 'up',
+        'complete_change': 'down'
+    }
+
+    assert expected == progress_report(current_report, previous_report)
+
+
 def test_google_sheet_url(settings, google_sheet_url):
     """Check the URL returned is proper."""
     settings.GOOGLE_SPREADSHEET_ID = "TESTMCTESTTEST"
