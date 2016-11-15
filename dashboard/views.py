@@ -1,7 +1,9 @@
 import datetime
 
+from dateutil.relativedelta import relativedelta
+
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import redirect
 from django.views.generic import View, TemplateView
 
@@ -27,6 +29,22 @@ class Dashboard(TemplateView):
         data = cache.get('dashboard_data', [])
         updated = summaries.latest_update()
         context = dict(data=data, updated=updated)
+        return context
+
+
+class History(TemplateView):
+    template_name = "history.html"
+
+    def get_context_data(self, filter_id, **kwargs):
+        start_date = datetime.date.today() - relativedelta(days=90)
+        filter_summaries = summaries.for_date_range(filter_id, start_date)
+        if not filter_summaries:
+            raise Http404("No filter with id: {}".format(filter_id))
+
+        context = dict(
+            filter_id=filter_id,
+            filter_summaries=filter_summaries
+        )
         return context
 
 

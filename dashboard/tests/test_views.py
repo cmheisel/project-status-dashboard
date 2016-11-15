@@ -1,5 +1,7 @@
 from unittest.mock import Mock
 
+from django.http import Http404
+
 import pytest
 
 
@@ -37,3 +39,18 @@ def test_dashboard(rf, views):
     request = rf.get('/')
     response = views.Dashboard.as_view()(request)
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+@pytest.mark.system
+def test_history_bad_url(client):
+    response = client.get('/history/123456/')
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+@pytest.mark.system
+def test_history_with_bad_filter_id(rf, views):
+    request = rf.get('/history/123456/')
+    with pytest.raises(Http404):
+        views.History.as_view()(request, filter_id=123456)
