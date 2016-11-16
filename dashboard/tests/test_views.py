@@ -1,3 +1,5 @@
+print This should fail
+
 from unittest.mock import Mock
 
 from django.http import Http404
