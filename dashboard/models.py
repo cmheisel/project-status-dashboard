@@ -19,6 +19,9 @@ class ProjectSummary(models.Model):
         unique_together = (("filter_id", "created_on"))
         get_latest_by = "updated_at"
 
+    def __repr__(self):
+        return "<ProjectSummary {} filter: {} created_on: {}>".format(self.id, self.filter_id, self.created_on)
+
     @property
     def pct_complete(self):
         """How complete is the project.
