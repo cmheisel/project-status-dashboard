@@ -32,8 +32,8 @@ class Dashboard(TemplateView):
         return context
 
 
-class History(TemplateView):
-    template_name = "history.html"
+class Forecast(TemplateView):
+    template_name = "forecast.html"
 
     def get_context_data(self, filter_id, **kwargs):
         start_date = datetime.date.today() - relativedelta(days=90)
