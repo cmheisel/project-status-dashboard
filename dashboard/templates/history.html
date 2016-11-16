@@ -1,15 +1,19 @@
+{% extends "base.html" %}
 {% load dashboard_tags %}
 
 
-<h1>Project Dashboard</h1>
-<h2>Filter: {{ filter_id }}</h2>
+{% block title %}Project Forecast: {{ filter_id }}{% endblock title %}
+{% block page_title %}Project Forecast: {{ filter_id }}{% endblock page_title %}
 
-<table class="table table-striped table-bordered table-hover table-condensed" id="projects">
+{% block content %}
+<small><a href="{% url 'dashboard' %}" title="Back"><< Back</a></small>
+<table class="table table-striped table-bordered table-hover table-condensed" id="project_history">
+  <caption>Progress over past 90 days</caption>
     <thead class="thead">
       <tr>
         <th>Date</th>
         <th>Complete</th>
-        <th>Incomplete</th>
+        <th>Total</th>
         <th>Progress</th>
       </tr>
     </thead>
@@ -18,8 +22,9 @@
       <tr>
         <td>{{ summary.created_on }}</td>
         <td>{{ summary.complete }}</td>
-        <td>{{ summary.incomplete }}</td>
+        <td>{{ summary.total }}</td>
         <td>{{ summary.pct_complete|percentage }}</td>
     {% endfor %}
     </tbody>
 </table>
+{% endblock content %}
