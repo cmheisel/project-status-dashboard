@@ -46,6 +46,7 @@ class Forecast(TemplateView):
         latest_summary = filter_summaries.last()
         throughputs = predictions.throughput_history(filter_summaries)
         two_week_forecast = predictions.forecast(throughputs, latest_summary.incomplete)
+        two_week_forecast = [latest_summary.created_on + relativedelta(days=int(f)) for f in two_week_forecast]
         forecasts = {days_ago + 1: {'percentiles': two_week_forecast, 'scope': latest_summary.incomplete}}
 
         throughputs = [0, ] + throughputs

@@ -33,6 +33,37 @@ def progress_report():
     return progress_report
 
 
+@pytest.fixture
+def week_ending_filter():
+    """Return the week_ending filter."""
+    from ..templatetags.dashboard_tags import week_ending
+    return week_ending
+
+
+def test_week_ending(week_ending_filter, datetime):
+    sunday = datetime.date(2016, 11, 13)
+    monday = datetime.date(2016, 11, 14)
+    tuesday = datetime.date(2016, 11, 15)
+    wednesday = datetime.date(2016, 11, 16)
+    thursday = datetime.date(2016, 11, 17)
+    friday = datetime.date(2016, 11, 18)
+    saturday = datetime.date(2016, 11, 19)
+    next_friday = datetime.date(2016, 11, 25)
+
+    cases = [
+        (sunday, friday),
+        (monday, friday),
+        (tuesday, friday),
+        (wednesday, friday),
+        (thursday, friday),
+        (friday, friday),
+        (saturday, next_friday)
+    ]
+
+    for (date, expected) in cases:
+        assert week_ending_filter(date) == expected
+
+
 def test_percentage(percentage_filter):
     """Floats come back with 1 place of precision."""
 

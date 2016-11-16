@@ -16,19 +16,27 @@
     <caption>Based on the last {{ days }} days performance with {{ forecast.scope }} tickets remaining</caption>
     <thead class="thead">
       <tr>
-        <th>Percentile</th>
-        <th>Days remaining</th>
+        <th>Percentile<sup>1</sup></th>
+        <th>Forecasted end date<sup>2</sup></th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>95th</td><td>{{ forecast.percentiles.2 }}</td>
+        <td>95th</td><td>{{ forecast.percentiles.2|week_ending }}</td>
       </tr>
       <tr>
-        <td>75th</td><td>{{ forecast.percentiles.1 }}</td>
+        <td>75th</td><td>{{ forecast.percentiles.1|week_ending }}</td>
       </tr>
       <tr>
-        <td>50th</td><td>{{ forecast.percentiles.0 }}</td>
+        <td>50th</td><td>{{ forecast.percentiles.0|week_ending }}</td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <small>
+            <sup>1</sup> N percent of 10,000 simulations completed this fast or faster<br />
+            <sup>2</sup> Nearest Friday
+          </small>
+        </td>
       </tr>
     </tbody>
   </table>

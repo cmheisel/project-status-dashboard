@@ -79,12 +79,13 @@ def test_forecast_with_good_filter_id(rf, views, summaries, make_one_summary, da
         recent_history.append(
             [summary.created_on, expected_throughput_history[i], summary.complete, summary.total, summary.pct_complete]
         )
+    expected_percentile_end_date = datetime.date.today() + relativedelta(days=1)
 
     actual_context = views.Forecast().get_context_data(filter_id=78910)
     expected_context = {
         "filter_id": 78910,
         "forecasts": {
-            30: {'percentiles': [2, 2, 2], 'scope': 2},
+            30: {'percentiles': [expected_percentile_end_date, expected_percentile_end_date, expected_percentile_end_date], 'scope': 2},
         },
         "recent_history": recent_history,
         "start_date": datetime.date.today() - relativedelta(days=29),
