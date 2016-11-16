@@ -6,7 +6,38 @@
 {% block page_title %}Project Forecast: {{ filter_id }}{% endblock page_title %}
 
 {% block content %}
-<small><a href="{% url 'dashboard' %}" title="Back"><< Back</a></small>
+<p><small><a href="{% url 'dashboard' %}" title="Back"><< Back</a></small></p>
+
+
+<div class="col-md-6" style="padding-left: 0px">
+  <h2>Forecasts</h2>
+  {% for days, percentiles in forecasts.items %}
+  <table class="table table-striped table-bordered table-hover table-condensed" id="forecasts">
+    <caption>Based on the last {{ days }} days performance</caption>
+    <thead class="thead">
+      <tr>
+        <th>Percentile</th>
+        <th>Days remaining</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>95th</td><td>{{ percentiles.2 }}</td>
+      </tr>
+      <tr>
+        <td>75th</td><td>{{ percentiles.1 }}</td>
+      </tr>
+      <tr>
+        <td>95th</td><td>{{ percentiles.0 }}</td>
+      </tr>
+    </tbody>
+  </table>
+  {% endfor %}
+</div>
+
+<div class="col-md-6" style="padding-right: 0px">Other Half here</div>
+
+
 <table class="table table-striped table-bordered table-hover table-condensed" id="project_history">
   <caption>Progress over past 90 days</caption>
     <thead class="thead">
