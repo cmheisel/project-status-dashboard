@@ -70,8 +70,9 @@ def test_forecast_with_good_filter_id(rf, views, summaries, make_one_summary, da
     actual_context = views.Forecast().get_context_data(filter_id=78910)
     expected_context = {
         "filter_id": 78910,
-        "filter_summaries": summaries.for_date_range(78910, datetime.date.today() - relativedelta(days=5)),
+        "filter_summaries": summaries.for_date_range(78910, datetime.date.today() - relativedelta(days=4)),
     }
 
+    assert actual_context.keys() == expected_context.keys()
     assert actual_context['filter_id'] == expected_context['filter_id']
     assert list(actual_context['filter_summaries']) == list(expected_context['filter_summaries'])
