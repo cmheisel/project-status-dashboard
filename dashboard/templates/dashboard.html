@@ -16,7 +16,7 @@
     {% for key in data.0.keys %}
         <th rowspan="2">{{ key }}</th>
     {% endfor %}
-        <th data-orderable="false" data-search="false" rowspan="2">JIRA</th>
+        <th data-orderable="false" data-search="false" rowspan="2">Controls</th>
         <th date-orderable="false" data-search="false" rowspan="2">Days remaining</th>
         <th data-orderable="false" data-search="false" colspan="2">Today</th>
         <th data-orderable="false" data-search="false" colspan="2">Last week</th>
@@ -38,6 +38,7 @@
           <td>
             {% if row.xtras.jira_summary %}
               <a href="{{ JIRA_URL }}/secure/IssueNavigator.jspa?mode=hide&amp;requestId={{ row.xtras.jira_summary.filter_id }}" title="View JIRA filter"><span class="glyphicon glyphicon-filter"></span></a>
+              <a href="{% url 'history' row.xtras.jira_summary.filter_id %}" title="View forecast"><span class="glyphicon glyphicon-calendar"></span></a>
             {% endif %}
           </td>
           <td>
