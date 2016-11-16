@@ -47,7 +47,7 @@ def fetch_query_results(filter_id, requests=requests, logger=LOGGER):
     return results
 
 
-def summarize_results(results, logger=LOGGER):
+def summarize_results(results):
     """
     Summarize the JIRA issues into a standard dictionary.
 
@@ -63,6 +63,7 @@ def summarize_results(results, logger=LOGGER):
             'total': (int) Total of all issues: complete and incomplete
             'fetched_at': (datetime) When the results were pulled
     """
+    logger = logging.getLogger("dashboard.services.jira.summarize_results")
     summary = {
         'incomplete': 0,
         'complete': 0,
@@ -82,9 +83,10 @@ def summarize_results(results, logger=LOGGER):
     total = results['total']
     for issue in results['issues']:
         if issue['fields']['status']['name'].strip() in settings.JIRA_DONE:
+            logger.debug("COMPLETE: {} <{}> in <{}>".format(issue['key'], issue['fields']['status']['name'], settings.JIRA_DONE))
             summary['complete'] += 1
         else:
-            logger.debug("INCOMPLETE: {} <{}> not in <{}>".format(issue['key'], issue['fields']['status']['name'], settings.JIRA_DONE))
+            logger.info("INCOMPLETE: {} <{}> not in <{}>".format(issue['key'], issue['fields']['status']['name'], settings.JIRA_DONE))
             summary['incomplete'] += 1
 
     summary['total'] = total

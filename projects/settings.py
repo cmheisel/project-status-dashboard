@@ -197,6 +197,11 @@ LOGGING = {
             "formatter": "simple",
             "level": "WARNING"
         },
+        "dashboard.services.jira.summarize_results": {
+            "handlers": ["console", ],
+            "formatter": "simple",
+            "level": "INFO"
+        },
         'requests': {
             # The requests library is too verbose in it's logging, reducing the verbosity in our logs.
             'handlers': ["console", ],
