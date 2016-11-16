@@ -36,21 +36,32 @@ class Forecast(TemplateView):
     template_name = "forecast.html"
 
     def get_context_data(self, filter_id, **kwargs):
-        start_date = datetime.date.today() - relativedelta(days=90)
+        days_ago = 29
+
+        start_date = datetime.date.today() - relativedelta(days=days_ago)
         filter_summaries = summaries.for_date_range(filter_id, start_date)
         if not filter_summaries:
             raise Http404("No filter with id: {}".format(filter_id))
 
         latest_summary = filter_summaries.last()
-        two_weeks_ago = latest_summary.created_on - relativedelta(days=14)
-        two_week_forecast = predictions.for_project(filter_id=filter_id, backlog_size=latest_summary.incomplete, start_date=two_weeks_ago)
+        throughputs = predictions.throughput_history(filter_summaries)
+        two_week_forecast = predictions.forecast(throughputs, latest_summary.incomplete)
+        forecasts = {days_ago + 1: {'percentiles': two_week_forecast, 'scope': latest_summary.incomplete}}
 
-        forecasts = {14: two_week_forecast}
+        throughputs = [0, ] + throughputs
+        recent_history = []
+        for i in range(0, len(filter_summaries)):
+            summary = filter_summaries[i]
+            recent_history.append(
+                [summary.created_on, throughputs[i], summary.complete, summary.total, summary.pct_complete]
+            )
 
         context = dict(
             filter_id=filter_id,
-            filter_summaries=filter_summaries,
+            recent_history=recent_history,
             forecasts=forecasts,
+            start_date=start_date,
+            end_date=latest_summary.created_on
         )
         return context
 

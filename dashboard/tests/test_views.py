@@ -71,16 +71,29 @@ def test_forecast_with_good_filter_id(rf, views, summaries, make_one_summary, da
     response = views.Forecast.as_view()(request, filter_id=78910)
     assert response.status_code == 200
 
+    recent_history = []
+    expected_throughput_history = [0, 1, 1]
+    recent_summaries = list(summaries.for_date_range(78910, datetime.date.today() - relativedelta(days=4)))
+    for i in range(0, len(recent_summaries)):
+        summary = recent_summaries[i]
+        recent_history.append(
+            [summary.created_on, expected_throughput_history[i], summary.complete, summary.total, summary.pct_complete]
+        )
+
     actual_context = views.Forecast().get_context_data(filter_id=78910)
     expected_context = {
         "filter_id": 78910,
-        "filter_summaries": summaries.for_date_range(78910, datetime.date.today() - relativedelta(days=4)),
         "forecasts": {
-            14: [2, 2, 2],
-        }
+            30: {'percentiles': [2, 2, 2], 'scope': 2},
+        },
+        "recent_history": recent_history,
+        "start_date": datetime.date.today() - relativedelta(days=29),
+        "end_date": datetime.date.today() - relativedelta(days=1),
     }
 
     assert actual_context.keys() == expected_context.keys()
-    assert actual_context['filter_id'] == expected_context['filter_id']
-    assert list(actual_context['filter_summaries']) == list(expected_context['filter_summaries'])
-    assert actual_context['forecasts'] == expected_context['forecasts']
+    for key, value in expected_context.items():
+        if key == "filter_summaries":
+            assert list(actual_context[key]) == list(expected_context[key])
+        else:
+            assert actual_context[key] == expected_context[key], "Key: {}".format(key)
