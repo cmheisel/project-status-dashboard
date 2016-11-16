@@ -59,9 +59,15 @@ def test_history_with_bad_filter_id(rf, views):
 @pytest.mark.django_db
 @pytest.mark.system
 def test_forecast_with_good_filter_id(rf, views, summaries, make_one_summary, datetime, relativedelta):
-    for i in range(1, 4):
-        s = make_one_summary(filter_id=78910, created_on=datetime.date.today() - relativedelta(days=i))
+    incomplete = 4
+    complete = 0
+    total = incomplete + complete
+    for i in reversed(range(1, 4)):
+        s = make_one_summary(filter_id=78910, created_on=datetime.date.today() - relativedelta(days=i), incomplete=incomplete, complete=complete, total=total)
         summaries.store(s)
+        incomplete = incomplete - 1
+        complete = complete + 1
+        total = incomplete + complete
 
     request = rf.get('/forecast/78910/')
     response = views.Forecast.as_view()(request, filter_id=78910)
@@ -71,8 +77,12 @@ def test_forecast_with_good_filter_id(rf, views, summaries, make_one_summary, da
     expected_context = {
         "filter_id": 78910,
         "filter_summaries": summaries.for_date_range(78910, datetime.date.today() - relativedelta(days=4)),
+        "forecasts": {
+            14: [2, 2, 2],
+        }
     }
 
     assert actual_context.keys() == expected_context.keys()
     assert actual_context['filter_id'] == expected_context['filter_id']
     assert list(actual_context['filter_summaries']) == list(expected_context['filter_summaries'])
+    assert actual_context['forecasts'] == expected_context['forecasts']

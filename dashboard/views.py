@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.views.generic import View, TemplateView
 
 from .jobs import generate_dashboard
-from .services import summaries
+from .services import summaries, predictions
 
 
 class HealthCheck(View):
@@ -41,9 +41,16 @@ class Forecast(TemplateView):
         if not filter_summaries:
             raise Http404("No filter with id: {}".format(filter_id))
 
+        latest_summary = filter_summaries.last()
+        two_weeks_ago = latest_summary.created_on - relativedelta(days=14)
+        two_week_forecast = predictions.for_project(filter_id=filter_id, backlog_size=latest_summary.incomplete, start_date=two_weeks_ago)
+
+        forecasts = {14: two_week_forecast}
+
         context = dict(
             filter_id=filter_id,
-            filter_summaries=filter_summaries
+            filter_summaries=filter_summaries,
+            forecasts=forecasts,
         )
         return context
 
