@@ -44,11 +44,10 @@ def fetch_query_results(filter_id, requests=requests, logger=LOGGER):
     if 'errorMessages' in results.keys():
         logger.warning('{} produced errors: {}'.format(fetch_message, results['errorMessages']))
 
-    logger.debug("fetch_query_results: RECEIVE: {}".format(results))
     return results
 
 
-def summarize_results(results):
+def summarize_results(results, logger=LOGGER):
     """
     Summarize the JIRA issues into a standard dictionary.
 
@@ -82,9 +81,10 @@ def summarize_results(results):
 
     total = results['total']
     for issue in results['issues']:
-        if issue['fields']['status']['name'] in settings.JIRA_DONE:
+        if issue['fields']['status']['name'].strip() in settings.JIRA_DONE:
             summary['complete'] += 1
         else:
+            logger.debug("INCOMPLETE: {} <{}> not in <{}>".format(issue['key'], issue['fields']['status']['name'], settings.JIRA_DONE))
             summary['incomplete'] += 1
 
     summary['total'] = total
