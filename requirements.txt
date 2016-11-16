@@ -31,6 +31,7 @@ pyflakes==1.2.3
 pytest-flake8==0.5
 requests-mock==1.0.0
 mock==2.0.0
+pytest-mock==1.4.0
 
 coverage==4.1
 pytest-cov==2.3.0

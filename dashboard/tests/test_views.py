@@ -1,7 +1,3 @@
-print This should fail
-
-from unittest.mock import Mock
-
 from django.http import Http404
 
 import pytest
@@ -21,9 +17,9 @@ def test_health(rf, views):
 
 
 @pytest.mark.sytesm
-def test_refresh(rf, views, monkeypatch):
-    mock_cache = Mock()
-    mock_generate_dashboard = Mock()
+def test_refresh(rf, views, monkeypatch, mocker):
+    mock_cache = mocker.Mock()
+    mock_generate_dashboard = mocker.Mock()
     monkeypatch.setattr(views, 'cache', mock_cache)
     monkeypatch.setattr(views, 'generate_dashboard', mock_generate_dashboard)
 
