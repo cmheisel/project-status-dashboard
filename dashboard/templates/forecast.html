@@ -68,7 +68,43 @@
 
 </div>
 
-<div class="col-md-6" style="padding-right: 0px">Other Half here</div>
+<div class="col-md-6" style="padding-right: 0px">
+  <div class="ct-chart ct-perfect-fourth"></div>
+  <style type="text/css">
+  .ct-series-a .ct-line, .ct-series-a .ct-point{
+  /* Set the colour of this series line */
+  stroke: #3B916A;
+  }
+  </style>
+  <script type="text/javascript">
+  var data = {
+    // A labels array that can contain any sort of values
+    labels: [{% for history in recent_history %}'{{ history.0|date:"m-d" }}',{% endfor %}],
+    // Our series array that contains series objects or in this case series data arrays
+    series: [
+      {
+        'name': 'completed',
+        'data': [{% for history in recent_history %}'{{ history.2}}',{% endfor %}]
+      },
+      {
+        'name': 'scope',
+        'data': [{% for history in recent_history %}'{{ history.3 }}',{% endfor %}]
+      }
+    ]
+  };
+  var options = {
+    axisY: {
+      onlyInteger: true,
+    }
+  }
+
+  // Create a new line chart object where as first parameter we pass in a selector
+  // that is resolving to our chart container element. The Second parameter
+  // is the actual data object.
+  new Chartist.Line('.ct-chart', data, options);
+  </script>
+
+</div>
 
 
 
