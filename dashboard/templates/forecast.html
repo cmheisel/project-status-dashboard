@@ -15,46 +15,62 @@
   <div class="alert alert-warning">
     Not enough data to make a forecast.
   </div>
-  {% endif %}
-  {% for days, forecast in forecasts.items %}
-  <table class="table table-striped table-bordered table-hover table-condensed" id="forecasts">
-    <caption>
-      Based on the past <strong>{{ recent_history|length }} days</strong> performance with <strong>{{ forecast.scope }} tickets remaining</strong>
-    </caption>
-    {% if forecast.actual_scope != forecast.scope %}
-    <caption class="alert alert-warning">
-      {% with forecast.actual_scope|subtract:forecast.scope as ticket_diff %}This simulation assumes <strong>you {% if ticket_diff < 0 %}add{% else %}remove{% endif %} {{ ticket_diff|absvalue }} tickets</strong>.{% endwith %}
-      There are actually {{ forecast.actual_scope }} tickets remaining.<br />
-    </caption>
-    {% endif %}
-    <thead class="thead">
-      <tr>
-        <th>Percentile<sup>1</sup></th>
-        <th>Forecasted end date<sup>2</sup></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>95th</td><td>{{ forecast.percentiles.2|week_ending }}</td>
-      </tr>
-      <tr>
-        <td>75th</td><td>{{ forecast.percentiles.1|week_ending }}</td>
-      </tr>
-      <tr>
-        <td>50th</td><td>{{ forecast.percentiles.0|week_ending }}</td>
-      </tr>
-      <tr>
-        <td colspan="3">
-          <small>
-            <sup>1</sup> Percentage of 10,000 simulations completed this fast or faster<br />
-            <sup>2</sup> Nearest Friday
-          </small>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  {% endfor %}
+  {% else %}
+    {% for days, forecast in forecasts.items %}
+    <table class="table table-striped table-bordered table-hover table-condensed" id="forecasts">
+      <caption>
+        Based on the past <strong>{{ recent_history|length }} days</strong> performance with <strong>{{ forecast.scope }} tickets remaining</strong>
+      </caption>
+      {% if forecast.actual_scope != forecast.scope %}
+      <caption class="alert alert-warning">
+        {% with forecast.actual_scope|subtract:forecast.scope as ticket_diff %}This simulation assumes <strong>you {% if ticket_diff < 0 %}add{% else %}remove{% endif %} {{ ticket_diff|absvalue }} tickets</strong>.{% endwith %}
+        There are actually {{ forecast.actual_scope }} tickets remaining.<br />
+      </caption>
+      {% endif %}
+      <thead class="thead">
+        <tr>
+          <th>Percentile<sup>1</sup></th>
+          <th>Forecasted end date<sup>2</sup></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>95th</td><td>{{ forecast.percentiles.2|week_ending }}</td>
+        </tr>
+        <tr>
+          <td>75th</td><td>{{ forecast.percentiles.1|week_ending }}</td>
+        </tr>
+        <tr>
+          <td>50th</td><td>{{ forecast.percentiles.0|week_ending }}</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <small>
+              <sup>1</sup> Percentage of 10,000 simulations completed this fast or faster<br />
+              <sup>2</sup> Nearest Friday
+            </small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
+  <h3>What if...</h3>
+  <form method="get" action="." id="resimulate" name="resimulate">
+    <div class="col-md-4" style="padding-left: 0px">
+      <label for="scope">...we had this many tickets remaining?</label>
+      <input type="text" class="form-control" name="scope" id="scope" value="{{ forecast.actual_scope }}">
+    </div>
+    <div class="col-md-4">
+      <label for="days_back">...the future was like the past ____ days?</label>
+      <input type="text" class="form-control" name="days_back" id="days_back" value="{{ days }}">
+    </div>
+    <div class="col-md-4">
+      <label>&nbsp;</label><br><br>
+      <input type="submit" value="Simulate">
+    </div>
+  </form>
+  {% endfor %}
+{% endif %}
 </div>
 
 <div class="col-md-6" style="padding-right: 0px">
