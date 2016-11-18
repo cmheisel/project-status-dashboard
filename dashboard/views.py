@@ -43,7 +43,11 @@ class Forecast(TemplateView):
 
     @property
     def days_ago(self):
-        return 29
+        try:
+            days_ago = int(self.request.GET.get('days_ago', 30))
+        except ValueError:
+            days_ago = 30
+        return days_ago
 
     @property
     def start_date(self):
@@ -63,7 +67,7 @@ class Forecast(TemplateView):
         try:
             forecast = predictions.forecast(throughputs, self.scope)
             forecast = [self.latest_summary.created_on + relativedelta(days=int(f)) for f in forecast]
-            forecasts = {self.days_ago + 1: {'percentiles': forecast, 'scope': self.scope, 'actual_scope': self.latest_summary.incomplete}}
+            forecasts = {self.days_ago: {'percentiles': forecast, 'scope': self.scope, 'actual_scope': self.latest_summary.incomplete}}
         except ValueError:
             forecasts = {}
         return ([0, ] + throughputs, forecasts)

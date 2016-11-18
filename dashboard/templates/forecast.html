@@ -62,7 +62,7 @@
     </div>
     <div class="col-md-4">
       <label for="days_back">...the future was like the past ____ days?</label>
-      <input type="text" class="form-control" name="days_back" id="days_back" value="{{ days }}">
+      <input type="text" class="form-control" name="days_ago" id="days_ago" value="{{ days }}">
     </div>
     <div class="col-md-4">
       <label>&nbsp;</label><br><br>
@@ -75,7 +75,7 @@
 
 <div class="col-md-6" style="padding-right: 0px">
   <h2>Progress over past {{ recent_history|length }} days</h2>
-  <div class="ct-chart ct-perfect-fourth"></div>
+  <div class="ct-chart"></div>
   <style type="text/css">
     .ct-series-a .ct-line, .ct-series-a .ct-point {
       /* Set the colour of this series line */
