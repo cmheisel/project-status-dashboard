@@ -40,6 +40,28 @@ def week_ending_filter():
     return week_ending
 
 
+@pytest.fixture
+def absvalue_filter():
+    from ..templatetags.dashboard_tags import absvalue
+    return absvalue
+
+
+@pytest.fixture
+def subtract_filter():
+    from ..templatetags.dashboard_tags import subtract
+    return subtract
+
+
+def test_subtract(subtract_filter):
+    assert subtract_filter(10, 2) == 8
+    assert subtract_filter(0, 2) == -2
+
+
+def test_absvalue(absvalue_filter):
+    assert absvalue_filter(-10) == 10
+    assert absvalue_filter(10) == 10
+
+
 def test_week_ending(week_ending_filter, datetime):
     sunday = datetime.date(2016, 11, 13)
     monday = datetime.date(2016, 11, 14)

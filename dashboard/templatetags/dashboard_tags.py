@@ -22,6 +22,16 @@ def percentage(value):
     return format(value, ".1%")
 
 
+@register.filter
+def subtract(value, arg):
+    return value - arg
+
+
+@register.filter
+def absvalue(value):
+    return abs(value)
+
+
 @register.simple_tag
 def google_sheet_url():
     from django.conf import settings
