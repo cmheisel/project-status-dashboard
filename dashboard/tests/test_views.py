@@ -244,3 +244,35 @@ def test_forecast_with_changing_scope(views, rf, make_predictable_summaries, dat
     assert actual_context.keys() == expected_context.keys()
     for key, value in expected_context.items():
         assert actual_context[key] == expected_context[key], "Key: {}".format(key)
+
+
+@pytest.mark.django_db
+@pytest.mark.system
+def test_forecast_with_no_scope_as_arg(views, rf, make_predictable_summaries, datetime, relativedelta):
+    make_predictable_summaries(4, 4, 888888, decrement=1)
+
+    recent_history = [
+        [datetime.date.today() - relativedelta(days=3), 0, 0, 4, 0.0],
+        [datetime.date.today() - relativedelta(days=2), 1, 1, 4, 0.25],
+        [datetime.date.today() - relativedelta(days=1), 1, 2, 4, 0.5],
+    ]
+
+    expected_percentile_end_date = datetime.date.today() + relativedelta(days=1)
+    expected_context = {
+        "filter_id": 888888,
+        "forecasts": {
+            30: {'percentiles': [expected_percentile_end_date, expected_percentile_end_date, expected_percentile_end_date], 'scope': 2, 'actual_scope': 2},
+        },
+        "recent_history": recent_history,
+        "start_date": datetime.date.today() - relativedelta(days=29),
+        "end_date": datetime.date.today() - relativedelta(days=1),
+    }
+
+    request = rf.get('/forecast/888888/', {'scope': ''})
+    view = views.Forecast.as_view()
+    response = view(request, filter_id=888888)
+    actual_context = response.context_data
+
+    assert actual_context.keys() == expected_context.keys()
+    for key, value in expected_context.items():
+        assert actual_context[key] == expected_context[key], "Key: {}".format(key)

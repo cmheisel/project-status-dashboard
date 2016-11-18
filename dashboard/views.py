@@ -49,7 +49,7 @@ class Forecast(TemplateView):
         scope = self.request.GET.get('scope', latest_summary.incomplete)
         try:
             scope = int(scope)
-        except TypeError:
+        except (TypeError, ValueError):
             scope = latest_summary.incomplete
 
         try:
