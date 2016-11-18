@@ -35,44 +35,60 @@ class Dashboard(TemplateView):
 class Forecast(TemplateView):
     template_name = "forecast.html"
 
-    def get_context_data(self, filter_id, **kwargs):
-        days_ago = 29
-
-        start_date = datetime.date.today() - relativedelta(days=days_ago)
-        filter_summaries = summaries.for_date_range(filter_id, start_date)
-        if not filter_summaries:
+    def find_summaries_or_404(self, filter_id):
+        self.filter_summaries = summaries.for_date_range(filter_id, self.start_date)
+        if not self.filter_summaries:
             raise Http404("No filter with id: {}".format(filter_id))
+        self.latest_summary = self.filter_summaries.last()
 
-        latest_summary = filter_summaries.last()
-        throughputs = predictions.throughput_history(filter_summaries)
+    @property
+    def days_ago(self):
+        return 29
 
-        scope = self.request.GET.get('scope', latest_summary.incomplete)
+    @property
+    def start_date(self):
+        return datetime.date.today() - relativedelta(days=self.days_ago)
+
+    @property
+    def scope(self):
         try:
-            scope = int(scope)
+            scope = int(self.request.GET.get('scope', ''))
         except (TypeError, ValueError):
-            scope = latest_summary.incomplete
+            scope = self.latest_summary.incomplete
+        return scope
+
+    def _generate_forecast(self):
+        throughputs = predictions.throughput_history(self.filter_summaries)
 
         try:
-            two_week_forecast = predictions.forecast(throughputs, scope)
-            two_week_forecast = [latest_summary.created_on + relativedelta(days=int(f)) for f in two_week_forecast]
-            forecasts = {days_ago + 1: {'percentiles': two_week_forecast, 'scope': scope, 'actual_scope': latest_summary.incomplete}}
+            forecast = predictions.forecast(throughputs, self.scope)
+            forecast = [self.latest_summary.created_on + relativedelta(days=int(f)) for f in forecast]
+            forecasts = {self.days_ago + 1: {'percentiles': forecast, 'scope': self.scope, 'actual_scope': self.latest_summary.incomplete}}
         except ValueError:
             forecasts = {}
+        return ([0, ] + throughputs, forecasts)
 
-        throughputs = [0, ] + throughputs
+    def _make_recent_history_table(self, throughputs):
         recent_history = []
-        for i in range(0, len(filter_summaries)):
-            summary = filter_summaries[i]
+        for i in range(0, len(self.filter_summaries)):
+            summary = self.filter_summaries[i]
             recent_history.append(
                 [summary.created_on, throughputs[i], summary.complete, summary.total, summary.pct_complete]
             )
+        return recent_history
+
+    def get_context_data(self, filter_id, **kwargs):
+        self.find_summaries_or_404(filter_id)
+
+        throughputs, forecasts = self._generate_forecast()
+        recent_history = self._make_recent_history_table(throughputs)
 
         context = dict(
             filter_id=filter_id,
             recent_history=recent_history,
             forecasts=forecasts,
-            start_date=start_date,
-            end_date=latest_summary.created_on
+            start_date=self.start_date,
+            end_date=self.latest_summary.created_on
         )
         return context
 
