@@ -14,8 +14,8 @@ test: reqs
 	DB_NAME=":memory:" GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) ./venv/bin/$(pytest_invoke)
 
 clean_pycs:
-	find . -name "*.pyc" -exec rm -rf {} \;
-	find . -name "__pycache__" -exec rm -rf {} \;
+	find . -name "*.pyc" -exec rm -rf {} \; || true
+	find . -name "__pycache__" -exec rm -rf {} \; || true
 
 clean_db:
 	rm -f data/*.db
@@ -24,6 +24,7 @@ clean_db:
 clean: clean_pycs
 	rm -rf venv
 	rm -rf static
+	rm -rf container/*.db
 
 docs: reqs
 	cd docs && make html
@@ -35,13 +36,13 @@ up:
 
 clean_docker:
 	docker-compose rm -f --all
-	docker rmi projectstatusdashboard_web
+	docker rmi projectstatusdashboard_web || true
 
-test_docker:
+test_docker: clean clean_docker
 	docker-compose build web
 	docker-compose run -e DB_NAME=":memory:" -e GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) -e JIRA_URL=$(JIRA_URL) web /app-ve/bin/$(pytest_invoke)
 
-release: test_docker clean clean_db clean_docker
+release: test_docker clean
 	docker-compose build web
 	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):latest
