@@ -65,6 +65,9 @@
         var new_hash = encodeURIComponent(this.value);
         window.location.hash = new_hash;
       })
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
     });
     </script>
   </body>
