@@ -94,7 +94,7 @@ def test_forecast_with_good_filter_id(rf, views, make_predictable_summaries, dat
             30: {'percentiles': [expected_percentile_end_date, expected_percentile_end_date, expected_percentile_end_date], 'scope': 1, 'actual_scope': 1},
         },
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=30),
+        "start_date": datetime.date.today() - relativedelta(days=29),
         "end_date": datetime.date.today() - relativedelta(days=0),
     }
 
@@ -120,7 +120,7 @@ def test_forecast_with_little_to_no_throughput(views, rf, make_predictable_summa
         "filter_id": 888888,
         "forecasts": {},
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=30),
+        "start_date": datetime.date.today() - relativedelta(days=29),
         "end_date": datetime.date.today(),
     }
 
@@ -150,7 +150,7 @@ def test_forecast_with_no_scope(views, rf, make_predictable_summaries, datetime,
         "filter_id": 999999,
         "forecasts": {},
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=30),
+        "start_date": datetime.date.today() - relativedelta(days=29),
         "end_date": datetime.date.today(),
     }
 
@@ -194,7 +194,7 @@ def test_forecast_with_lotsa_history(views, rf, make_predictable_summaries, date
             ]
         }},
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=30),
+        "start_date": datetime.date.today() - relativedelta(days=29),
         "end_date": datetime.date.today(),
     }
 
@@ -237,7 +237,7 @@ def test_forecast_with_changing_scope(views, rf, make_predictable_summaries, dat
             ]
         }},
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=30),
+        "start_date": datetime.date.today() - relativedelta(days=29),
         "end_date": datetime.date.today(),
     }
 
@@ -270,7 +270,7 @@ def test_forecast_with_no_scope_as_arg(views, rf, make_predictable_summaries, da
             30: {'percentiles': [expected_percentile_end_date, expected_percentile_end_date, expected_percentile_end_date], 'scope': 1, 'actual_scope': 1},
         },
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=30),
+        "start_date": datetime.date.today() - relativedelta(days=29),
         "end_date": datetime.date.today(),
     }
 
@@ -290,8 +290,7 @@ def test_forecast_with_variable_time(views, rf, make_predictable_summaries, date
     make_predictable_summaries(100, 10, 888888, decrement=1)
 
     recent_history = [
-        [datetime.date.today() - relativedelta(days=5), 0, 4, 100, 0.04],
-        [datetime.date.today() - relativedelta(days=4), 1, 5, 100, 0.05],
+        [datetime.date.today() - relativedelta(days=4), 0, 5, 100, 0.05],
         [datetime.date.today() - relativedelta(days=3), 1, 6, 100, 0.06],
         [datetime.date.today() - relativedelta(days=2), 1, 7, 100, 0.07],
         [datetime.date.today() - relativedelta(days=1), 1, 8, 100, 0.08],
@@ -305,7 +304,7 @@ def test_forecast_with_variable_time(views, rf, make_predictable_summaries, date
             5: {'percentiles': [expected_percentile_end_date, expected_percentile_end_date, expected_percentile_end_date], 'scope': 91, 'actual_scope': 91},
         },
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=5),
+        "start_date": datetime.date.today() - relativedelta(days=4),
         "end_date": datetime.date.today(),
     }
 
@@ -338,7 +337,7 @@ def test_forecast_with_variable_time_arg_empty(views, rf, make_predictable_summa
             30: {'percentiles': [expected_percentile_end_date, expected_percentile_end_date, expected_percentile_end_date], 'scope': 1, 'actual_scope': 1},
         },
         "recent_history": recent_history,
-        "start_date": datetime.date.today() - relativedelta(days=30),
+        "start_date": datetime.date.today() - relativedelta(days=29),
         "end_date": datetime.date.today(),
     }
 

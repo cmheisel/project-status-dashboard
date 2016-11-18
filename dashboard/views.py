@@ -51,7 +51,7 @@ class Forecast(TemplateView):
 
     @property
     def start_date(self):
-        return datetime.date.today() - relativedelta(days=self.days_ago)
+        return datetime.date.today() - relativedelta(days=self.days_ago - 1)
 
     @property
     def scope(self):
