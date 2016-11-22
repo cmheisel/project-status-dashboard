@@ -5,7 +5,8 @@
 project-status-dashboard
 ==========================
 
-Pull data about projects from a Google Sheet and JIRA.
+Pull data about projects from a Google Sheet and JIRA and make predictions about when they'll complete.
+
 
 Usage
 ======
