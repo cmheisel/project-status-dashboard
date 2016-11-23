@@ -72,6 +72,22 @@
   </form>
   {% endfor %}
 {% endif %}
+
+  <div class="col-md-12" style="padding-left: 0px">
+  <h3>How do these forecasts work?</h3>
+  <p>This is a <a href="http://focusedobjective.com/monte-carlo-forecasting-exercises/">Monte Carlo forecast</a> based on the team's historical throughput.</p>
+  <p>If you want a great hands-on exercise try <a href="http://focusedobjective.com/monte-carlo-forecasting-exercises/">Troy Magennis' diceware exercise</a></p>
+  <p>Here's what happens:</p>
+  <ol>
+    <li>We start with the number of tickets remaining.</li>
+    <li>We simulate a hypothetical day by randomly picking one of the <strong>Completed that day</strong> values from the table on the right and subtract it from the number of tickets remaining.</li>
+    <li>We do step #2 over and over again, until the number of tickets remaining is <strong>0</strong>.</li>
+    <li>We record the <strong>number of simulated days it took to get to 0</strong>, that's our first simulation.</li>
+    <li>We repeat steps 1 through 4 <strong>10,000</strong> times, assuming the scope doesn't change.</li>
+    <li>Looking at those dates we pick the ones that represent when the project will end <strong>50%, 75% and 95%</strong> of the 10,000 times.</li>
+    <li>Then we round those 3 dates up to the <strong>Friday nearest them</strong> because this forecast is only accurate down to the week.</li>
+  </ol>
+  </div>
 </div>
 
 <div class="col-md-6" style="padding-right: 0px">
