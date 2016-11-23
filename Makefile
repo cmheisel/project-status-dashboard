@@ -43,12 +43,14 @@ test_docker: clean clean_docker
 	docker-compose build web
 	docker-compose run -e DB_NAME=":memory:" -e GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) -e JIRA_URL=$(JIRA_URL) web /app-ve/bin/$(pytest_invoke)
 
-release: test_docker clean
+release: test_docker clean publish_docs
 	docker-compose build web
 	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 	docker tag projectstatusdashboard_web:latest $(DOCKER_IMAGE_NAME):latest
 	docker push $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 	docker push $(DOCKER_IMAGE_NAME):latest
 
+publish_docs:
+	./venv/bin/mkdocs gh-deploy
 
 .PHONY: test clean_pycs clean_db clean docs up clean_docker test_docker release

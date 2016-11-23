@@ -2,6 +2,7 @@
 data/
 
 static/*
+site
 
 # make-generated cruft
 reqs
