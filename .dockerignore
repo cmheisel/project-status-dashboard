@@ -7,3 +7,6 @@ venv
 .coverage
 docker-compose.yml
 reqs
+.travis.yml
+.python-version
+htmlcov

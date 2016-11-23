@@ -18,7 +18,7 @@ env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "DONT USE IN PRODUCTION LIKE THIS"),
     DB_NAME=(str, default_db_name),
-    REDIS_URL=(str, "redis:6379"),
+    REDIS_URL=(str, ""),
     REDIS_DB=(int, 1),
     GOOGLE_SPREADSHEET_ID=(str),
     JIRA_URL=(str),
@@ -89,21 +89,37 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': env('REDIS_URL'),
-        'OPTIONS': {
-            'DB': env('REDIS_DB'),
-        }
-    },
-}
+if env('REDIS_URL'):
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': env('REDIS_URL'),
+            'OPTIONS': {
+                'DB': env('REDIS_DB'),
+            }
+        },
+    }
 
-RQ_QUEUES = {
-    'default': {
-        'USE_REDIS_CACHE': 'default',
-    },
-}
+    RQ_QUEUES = {
+        'default': {
+            'USE_REDIS_CACHE': 'default',
+        },
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+    }
+    # Tell queus not to be async, give it a bogus redis config
+    RQ_QUEUES = {
+        'default': {
+            'HOST': 'localhost',
+            'PORT': 6379,
+            'DB': 0,
+            'ASYNC': False
+        },
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -180,6 +196,11 @@ LOGGING = {
             "handlers": ["console", ],
             "formatter": "simple",
             "level": "WARNING"
+        },
+        "dashboard.services.jira.summarize_results": {
+            "handlers": ["console", ],
+            "formatter": "simple",
+            "level": "INFO"
         },
         'requests': {
             # The requests library is too verbose in it's logging, reducing the verbosity in our logs.

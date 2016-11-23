@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% load dashboard_tags %}
+
+
+{% block title %}Project Forecast: {{ filter_id }}{% endblock title %}
+{% block page_title %}Project Forecast: {{ filter_id }}{% endblock page_title %}
+
+{% block content %}
+<p><small><a href="{% url 'dashboard' %}" title="Back"><< Back</a></small></p>
+
+
+<div class="col-md-6" style="padding-left: 0px">
+  <h2>Forecast</h2>
+  {% if not forecasts %}
+  <div class="alert alert-warning">
+    Not enough data to make a forecast.
+  </div>
+  {% else %}
+    {% for days, forecast in forecasts.items %}
+    <table class="table table-striped table-bordered table-hover table-condensed" id="forecasts">
+      <caption>
+        Based on the past <strong>{{ recent_history|length }} days<sup>1</sup></strong> performance with <strong>{{ forecast.scope }} tickets remaining</strong>
+      </caption>
+      {% if forecast.actual_scope != forecast.scope %}
+      <caption class="alert alert-warning">
+        {% with forecast.actual_scope|subtract:forecast.scope as ticket_diff %}This simulation assumes <strong>you {% if ticket_diff < 0 %}add{% else %}remove{% endif %} {{ ticket_diff|absvalue }} tickets</strong>.{% endwith %}
+        There are actually {{ forecast.actual_scope }} tickets remaining.<br />
+      </caption>
+      {% endif %}
+      <thead class="thead">
+        <tr>
+          <th>Percentile<sup>2</sup></th>
+          <th>Forecasted end date<sup>3</sup></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>95th</td><td>{{ forecast.percentiles.2|week_ending }}</td>
+        </tr>
+        <tr>
+          <td>75th</td><td>{{ forecast.percentiles.1|week_ending }}</td>
+        </tr>
+        <tr>
+          <td>50th</td><td>{{ forecast.percentiles.0|week_ending }}</td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <small>
+              <sup>1</sup> Forecasts are ignorant of company holidays, team team off, etc. Take into account when communicating.<br />
+              <sup>2</sup> Percentage of 10,000 simulations completed this fast or faster<br />
+              <sup>3</sup> Nearest Friday
+            </small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  <h3>What if...</h3>
+  <form method="get" action="." id="resimulate" name="resimulate">
+    <div class="col-md-4" style="padding-left: 0px">
+      <label for="scope">...we had this many tickets remaining?</label>
+      <input type="text" class="form-control" name="scope" id="scope" value="{{ forecast.actual_scope }}">
+    </div>
+    <div class="col-md-4">
+      <label for="days_back">...the future was like the past ____ days?</label>
+      <input type="text" class="form-control" name="days_ago" id="days_ago" value="{{ days }}">
+    </div>
+    <div class="col-md-4">
+      <label>&nbsp;</label><br><br>
+      <input type="submit" value="Simulate">
+    </div>
+  </form>
+  {% endfor %}
+{% endif %}
+
+  <div class="col-md-12" style="padding-left: 0px">
+  <h3>How do these forecasts work?</h3>
+  <p>This is a <a href="http://focusedobjective.com/monte-carlo-forecasting-exercises/">Monte Carlo forecast</a> based on the team's historical throughput.</p>
+  <p>If you want a great hands-on exercise try <a href="http://focusedobjective.com/monte-carlo-forecasting-exercises/">Troy Magennis' diceware exercise</a></p>
+  <p>Here's what happens:</p>
+  <ol>
+    <li>We start with the number of tickets remaining.</li>
+    <li>We simulate a hypothetical day by randomly picking one of the <strong>Completed that day</strong> values from the table on the right and subtract it from the number of tickets remaining.</li>
+    <li>We do step #2 over and over again, until the number of tickets remaining is <strong>0</strong>.</li>
+    <li>We record the <strong>number of simulated days it took to get to 0</strong>, that's our first simulation.</li>
+    <li>We repeat steps 1 through 4 <strong>10,000</strong> times, assuming the scope doesn't change.</li>
+    <li>Looking at those dates we pick the ones that represent when the project will end <strong>50%, 75% and 95%</strong> of the 10,000 times.</li>
+    <li>Then we round those 3 dates up to the <strong>Friday nearest them</strong> because this forecast is only accurate down to the week.</li>
+  </ol>
+  </div>
+</div>
+
+<div class="col-md-6" style="padding-right: 0px">
+  <h2>Progress over past {{ recent_history|length }} days</h2>
+  <div class="ct-chart"></div>
+  <style type="text/css">
+    .ct-series-a .ct-line, .ct-series-a .ct-point {
+      /* Set the colour of this series line */
+      stroke: #3B916A;
+    }
+    .ct-series-b .ct-line, .ct-series-b .ct-point {
+      stroke: #f05b4f;
+    }
+    .ct-legend {
+        position: relative;
+        z-index: 10;
+        list-style: none;
+        text-align: left;
+        padding: 25px 0 0 50px;
+    }
+    .ct-legend li {
+        position: relative;
+        padding-left: 15px;
+        cursor: pointer;
+    }
+    .ct-legend li:before {
+      width: 12px;
+      height: 12px;
+      position: absolute;
+      left: 0;
+      top: 5px;
+      content: '';
+      border: 3px solid transparent;
+      border-radius: 2px;
+    }
+    .ct-legend li.inactive:before {
+      background: transparent;
+    }
+    .ct-legend.ct-legend-inside {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .ct-legend.ct-legend-inside li{
+      display: block;
+      margin: 0;
+    }
+    .ct-legend .ct-series-0:before {
+      background-color: #3B916A;
+      border-color: #3B916A;
+    }
+    .ct-legend .ct-series-1:before {
+      background-color: #f05b4f;
+      border-color: #f05b4f;
+    }
+  </style>
+  <script type="text/javascript">
+  var data = {
+    // A labels array that can contain any sort of values
+    labels: [{% for history in recent_history %}'{{ history.0|date:"m-d" }}',{% endfor %}],
+    // Our series array that contains series objects or in this case series data arrays
+    series: [
+      {
+        'name': 'completed',
+        'data': [{% for history in recent_history %}'{{ history.2}}',{% endfor %}]
+      },
+      {
+        'name': 'scope',
+        'data': [{% for history in recent_history %}'{{ history.3 }}',{% endfor %}]
+      }
+    ]
+  };
+  var options = {
+    axisY: {
+      onlyInteger: true,
+    },
+    plugins: [
+        Chartist.plugins.legend({
+            className: 'crazyPink'
+        })
+    ]
+  }
+
+  // Create a new line chart object where as first parameter we pass in a selector
+  // that is resolving to our chart container element. The Second parameter
+  // is the actual data object.
+  new Chartist.Line('.ct-chart', data, options);
+  </script>
+  <table class="table table-striped table-bordered table-hover table-condensed" id="project_history">
+      <thead class="thead">
+        <tr>
+          <th>Date</th>
+          <th>Completed that day</th>
+          <th>Total complete</th>
+          <th>Scope</th>
+          <th>Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for history in recent_history %}
+        <tr>
+          <td>{{ history.0 }}</td>
+          <td>{{ history.1 }}</td>
+          <td>{{ history.2 }}</td>
+          <td>{{ history.3 }}</td>
+          <td>{{ history.4|percentage }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+
+</div>
+
+
+
+{% endblock content %}

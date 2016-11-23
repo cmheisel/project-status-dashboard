@@ -13,5 +13,7 @@ web:
     - JIRA_URL=http://jira.example.com
     - JIRA_AUTH=user,password
     - JIRA_DONE=Closed,Merged
+    - GUNICORN_WORKERS=10
+    - REDIS_URL=redis:6379
   links:
     - redis

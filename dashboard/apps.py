@@ -2,6 +2,7 @@
 import logging
 from datetime import datetime
 from django.core.cache import cache
+from django.conf import settings
 
 import django_rq
 
@@ -21,7 +22,7 @@ class DashboardConfig(AppConfig):
         cache_key = 'dashboard.config.jobs_scheduled'
         scheduled = cache.get(cache_key, False)
 
-        if not scheduled:
+        if not scheduled and settings.RQ_QUEUES.get('default', {}).get('ASYNC', True):
             logger.info("Scheduling jobs")
             scheduler = django_rq.get_scheduler('default')
             scheduler.schedule(

@@ -44,9 +44,9 @@ def test_summarize_results(jira, settings):
     issue_list = {
         'total': 3,
         'issues': [
-            {'fields': {'status': {'name': 'In Progress'}}},
-            {'fields': {'status': {'name': 'In Progress'}}},
-            {'fields': {'status': {'name': 'Donnager'}}},
+            {'key': 'JIRA-1', 'fields': {'status': {'name': 'In Progress'}}},
+            {'key': 'JIRA-2', 'fields': {'status': {'name': 'In Progress'}}},
+            {'key': 'JIRA-3', 'fields': {'status': {'name': 'Donnager'}}},
         ]
     }
     expected = {
@@ -54,6 +54,32 @@ def test_summarize_results(jira, settings):
         'complete': 1,
         'pct_complete': 1 / 3.0,
         'total': 3,
+        'errors': [],
+    }
+    assert jira.summarize_results(issue_list) == expected
+
+
+def test_summarize_results_with_multiple_done_labels_and_whitespace(jira, settings):
+    """Verify happy path results when there's multiple JIRA_DONE labels and there's whitespace"""
+    settings.JIRA_DONE = ["Abandoned", "Done", "Deployed", "Closed", "Accepted", "Invalid Ticket", "Merged", "Release"]
+    issue_list = {
+        'total': 7,
+        'issues': [
+            {'key': "JIRA-1", 'fields': {'status': {'name': 'In Progress'}}},
+            {'key': "JIRA-2", 'fields': {'status': {'name': 'In Progress'}}},
+            {'key': "JIRA-3", 'fields': {'status': {'name': 'Abandoned'}}},
+            {'key': "JIRA-4", 'fields': {'status': {'name': 'Deployed'}}},
+            {'key': "JIRA-5", 'fields': {'status': {'name': 'Accepted'}}},
+            {'key': "JIRA-6", 'fields': {'status': {'name': 'Invalid Ticket    '}}},
+            {'key': "JIRA-7", 'fields': {'status': {'name': 'Foo bar baz'}}},
+
+        ]
+    }
+    expected = {
+        'incomplete': 3,
+        'complete': 4,
+        'pct_complete': 4 / 7.0,
+        'total': 7,
         'errors': [],
     }
     assert jira.summarize_results(issue_list) == expected

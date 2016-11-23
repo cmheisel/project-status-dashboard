@@ -5,33 +5,8 @@ from dateutil.relativedelta import relativedelta
 
 
 @pytest.fixture
-def summaries():
-    """Get the module under test."""
-    from ..services import summaries
-    return summaries
-
-
-@pytest.fixture
-def datetime():
-    """Provide fixture for datetime."""
-    import datetime
-    return datetime
-
-
-@pytest.fixture
-def make_one(summaries):
-    """Provide an function to make an instance of the CUT."""
-    def _make_one(**kwargs):
-        defaults = dict(
-            filter_id=6292809552232448,
-            incomplete=5,
-            complete=10,
-            total=15,
-        )
-        defaults.update(**kwargs)
-        s = summaries.create(**defaults)
-        return s
-    return _make_one
+def make_one(make_one_summary):
+    return make_one_summary
 
 
 def test_make_one(make_one):
@@ -259,3 +234,23 @@ def test_latest_update(summaries, make_one, datetime):
 def test_latest_update_with_no_records(summaries, make_one):
     """Ensure that summaries.latest_update returns None if there are no summaries."""
     assert summaries.latest_update() is None
+
+
+@pytest.mark.system
+@pytest.mark.django_db
+def test_for_date_range(summaries, make_one, datetime):
+    """Ensure we can find many summaries from the past."""
+    week_ago = datetime.date.today() - relativedelta(days=7)
+
+    s1 = make_one(created_on=week_ago)
+    s2 = make_one()
+    s3 = make_one(filter_id=111)
+
+    s2, result = summaries.store(s2)
+    s3, result = summaries.store(s3)
+    s1, result = summaries.store(s1)
+
+    past_summaries = summaries.for_date_range(filter_id=s2.filter_id, start_date=week_ago)
+    assert 2 == len(past_summaries)
+    assert past_summaries[0] == s1
+    assert past_summaries[1] == s2

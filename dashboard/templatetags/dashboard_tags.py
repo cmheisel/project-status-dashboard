@@ -1,12 +1,35 @@
+from dateutil.relativedelta import relativedelta
+
 from django import template
 
 register = template.Library()
 
 
 @register.filter
+def week_ending(value):
+    """Return the Friday of the week of the date provided."""
+    if not hasattr(value, "weekday"):
+        return ""
+    ending_date = value
+    while ending_date.weekday() != 4:  # If not a friday
+        ending_date = ending_date + relativedelta(days=1)
+    return ending_date
+
+
+@register.filter
 def percentage(value):
     """Return a float with 1 point of precision and a percent sign."""
     return format(value, ".1%")
+
+
+@register.filter
+def subtract(value, arg):
+    return value - arg
+
+
+@register.filter
+def absvalue(value):
+    return abs(value)
 
 
 @register.simple_tag
