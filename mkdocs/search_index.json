@@ -1,0 +1,49 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "project-status-dashboard\n\n\nOverview\n\n\nproject-status-dashboard is a way to surface information about multiple projects that are tracked in \nJIRA\n and to \nexpose predictions\n about when they're completed.\n\n\nYou manage what projects are tracked and how they're displayed via \na Google spreadsheet\n.\n\n\nHow to use the dashboard\n\n\nSet up your Google spreadsheet\n\n\n\n\n\n\nCreate a google spreadsheet with \nwhatever columns\n you want to display\n\n\nCreate a \nspecial column\n called \n_jira_filter\n this is how we'll tell the dashboard tickets are involved in the project\n\n\nPut one project on each row, filling out as many columns as you like for that project\n\n\nPublish the spreadsheet\n\n\nFile > Publish to Web\n\n\nEntire Document\n\n\nExample spreadsheet\n\n\n\n\n\n\n\n\nCreate a JIRA filter for each project\n\n\n\n\nUse whatever \nJIRA search criteria\n works for your team, common examples include:\n\n\nBy Epic: \n\"Epic Link\" = MYPROJ-101\n\n\nBy tag: \nlabels = theawesome-project\n\n\nBy multiple Epics: \n\"Epic Link\" = MYPROJ-1342 OR \"Epic Link\" = MYPROJ-1472\n\n\n\n\n\n\nSave your JIRA filter\n\n\nShare the JIRA filter with \nEveryone\n\n\nCopy the \nJIRA filter ID\n: https://jira.example.com/issues/?filter=\n12286\n\n\nPut the \nfilter ID\n into the \n_jira_filter\n column for that project\n\n\n\n\n\n\nView the dashboard\n\n\n\nThe \n_jira_filter\n you provided will automatically add several columns to the ones you created\n\n\n\n\nJIRA\n: A link the filter, so you can dive into specific tickets\n\n\nForecast\n: A link to the Forecast page for the project (see below)\n\n\nToday\n: The percentage of complete tickets, and the number of total tickets\n\n\nThe arrows indicate a change in completion and/or scope from the prior week\n\n\n\n\n\n\nLast week\n: The percentage of complete tickets, and the number of total tickets from one week ago\n\n\n\n\nView the forecast\n\n\n\n\nThe forecast view includes\n\n\n\n\nA chart displaying the change in scope and completion over time\n\n\nA tabular view of that same data\n\n\nA forecast of when the work would be completed \nassuming the scope doesn't change\n with various degress of confidence\n\n\nA form to modify the forecast\n\n\n\n\nModify the forecast\n\n\n\n\nYou can experiment with the forecast to simulate some \n\"What if\"\n scenarios\n\n\n\n\nModify the number of tickets remaining to see what effect cutting/growing scope might have on the forecasted end date\n\n\nModify how many past days are sampled to generate the forecast if you think the default 30 day view is atypical -- maybe the past month had a lot of PTO, or maybe the team just shrunk because some folks were reassigned.",
+            "title": "Home"
+        },
+        {
+            "location": "/#project-status-dashboard",
+            "text": "",
+            "title": "project-status-dashboard"
+        },
+        {
+            "location": "/#overview",
+            "text": "project-status-dashboard is a way to surface information about multiple projects that are tracked in  JIRA  and to  expose predictions  about when they're completed.  You manage what projects are tracked and how they're displayed via  a Google spreadsheet .",
+            "title": "Overview"
+        },
+        {
+            "location": "/#how-to-use-the-dashboard",
+            "text": "",
+            "title": "How to use the dashboard"
+        },
+        {
+            "location": "/#set-up-your-google-spreadsheet",
+            "text": "Create a google spreadsheet with  whatever columns  you want to display  Create a  special column  called  _jira_filter  this is how we'll tell the dashboard tickets are involved in the project  Put one project on each row, filling out as many columns as you like for that project  Publish the spreadsheet  File > Publish to Web  Entire Document  Example spreadsheet",
+            "title": "Set up your Google spreadsheet"
+        },
+        {
+            "location": "/#create-a-jira-filter-for-each-project",
+            "text": "Use whatever  JIRA search criteria  works for your team, common examples include:  By Epic:  \"Epic Link\" = MYPROJ-101  By tag:  labels = theawesome-project  By multiple Epics:  \"Epic Link\" = MYPROJ-1342 OR \"Epic Link\" = MYPROJ-1472    Save your JIRA filter  Share the JIRA filter with  Everyone  Copy the  JIRA filter ID : https://jira.example.com/issues/?filter= 12286  Put the  filter ID  into the  _jira_filter  column for that project",
+            "title": "Create a JIRA filter for each project"
+        },
+        {
+            "location": "/#view-the-dashboard",
+            "text": "The  _jira_filter  you provided will automatically add several columns to the ones you created   JIRA : A link the filter, so you can dive into specific tickets  Forecast : A link to the Forecast page for the project (see below)  Today : The percentage of complete tickets, and the number of total tickets  The arrows indicate a change in completion and/or scope from the prior week    Last week : The percentage of complete tickets, and the number of total tickets from one week ago",
+            "title": "View the dashboard"
+        },
+        {
+            "location": "/#view-the-forecast",
+            "text": "The forecast view includes   A chart displaying the change in scope and completion over time  A tabular view of that same data  A forecast of when the work would be completed  assuming the scope doesn't change  with various degress of confidence  A form to modify the forecast",
+            "title": "View the forecast"
+        },
+        {
+            "location": "/#modify-the-forecast",
+            "text": "You can experiment with the forecast to simulate some  \"What if\"  scenarios   Modify the number of tickets remaining to see what effect cutting/growing scope might have on the forecasted end date  Modify how many past days are sampled to generate the forecast if you think the default 30 day view is atypical -- maybe the past month had a lot of PTO, or maybe the team just shrunk because some folks were reassigned.",
+            "title": "Modify the forecast"
+        }
+    ]
+}
