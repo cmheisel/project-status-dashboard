@@ -22,6 +22,7 @@ clean_db:
 	rm -f *.db
 
 clean: clean_pycs
+	rm -rf reqs
 	rm -rf venv
 	rm -rf static
 	rm -rf container/*.db
