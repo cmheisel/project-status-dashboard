@@ -66,6 +66,7 @@
         <li class="main active"><a href="#project-status-dashboard">project-status-dashboard</a></li>
             <li><a href="#overview">Overview</a></li>
             <li><a href="#how-to-use-the-dashboard">How to use the dashboard</a></li>
+            <li><a href="#how-to-deploy-the-dashboard">How to deploy the dashboard</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -129,7 +130,21 @@ The <strong>_jira_filter</strong> you provided will automatically add several co
 <ul>
 <li>Modify the number of tickets remaining to see what effect cutting/growing scope might have on the forecasted end date</li>
 <li>Modify how many past days are sampled to generate the forecast if you think the default 30 day view is atypical -- maybe the past month had a lot of PTO, or maybe the team just shrunk because some folks were reassigned.</li>
-</ul></div>
+</ul>
+<h2 id="how-to-deploy-the-dashboard">How to deploy the dashboard</h2>
+<p>The dashboard is provided as a <a href="https://hub.docker.com/r/cmheisel/project-status-dashboard/">Docker container</a> to make deployment relatively straightforward. <a href="https://docs.docker.com/machine/">Docker machine</a> is an easy way to spin up Docker hosts in the cloud or on VMs, and [Docker compose] is an easy way to spin up the dashboard container on your host.</p>
+<p>There's a <a href="https://github.com/cmheisel/project-status-dashboard/blob/master/docker-sample/docker-compose.yml">sample docker-compose file</a> in the repository that will spin up the dashboard container and a <a href="http://redis.io/">redis container</a> which is used for caching and for job queing.</p>
+<p>The following settings are controlled via environment variables in the docker-compose file:</p>
+<pre><code>environment:
+  - DB_NAME=/data/sample.db  # What you want the database file to be called
+  - GOOGLE_SPREADSHEET_ID=1NJ90QUwSgGYwRdDmvOcxi-QKxfdmcB5IZHi9pXhu1Hw  # The ID of your google spreadsheet
+  - JIRA_URL=http://jira.example.com  # The URL of your JIRA instance
+  - JIRA_SSL_VERIFY=True  # If you want the SSL certificate verified, set to False if you're using a self-signed cert
+  - JIRA_AUTH=user,password  # The user and password to connect to JIRA
+  - JIRA_DONE=Closed,Merged  # The list of states that should be considered &quot;Done&quot; when analyzing tickets
+  - GUNICORN_WORKERS=10  # The number of web server workers to spin up, add more if your dashboard receives high traffic
+  - REDIS_URL=redis:6379  # Default set for the docker container, can change it if you're hosting your own redis
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">
@@ -168,5 +183,5 @@ The <strong>_jira_filter</strong> you provided will automatically add several co
 
 <!--
 MkDocs version : 0.16.0
-Build Date UTC : 2016-11-23 18:06:44
+Build Date UTC : 2016-11-25 15:11:15
 -->
