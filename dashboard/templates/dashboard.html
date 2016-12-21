@@ -16,10 +16,11 @@
     {% for key in data.0.keys %}
         <th rowspan="2">{{ key }}</th>
     {% endfor %}
-        <th data-orderable="false" data-search="false" rowspan="2">JIRA</th>
-        <th data-orderable="false" data-search="false" rowspan="2">Forecast</th>
+        <th data-orderable="true" data-search="false" rowspan="2">Target date</th>
+        <th data-orderable="true" data-search="false" rowspan="2">Forecast<sup>1</sup></th>
         <th data-orderable="false" data-search="false" colspan="2">Today</th>
         <th data-orderable="false" data-search="false" colspan="2">Last week</th>
+        <th data-orderable="false" data-search="false" rowspan="2">Filter</th>
     </tr>
     <tr>
       <th>Complete</th>
@@ -29,20 +30,29 @@
     </tr>
 
   </thead>
+  <tfoot>
+    <tr>
+      <td colspan="{{ data.0.keys|length|add:"6" }}">
+        <sup>1</sup><strong>95%</strong> of 10,000 simulations <strong>completed this fast or faster</strong> based on up to the past <strong>30 days</strong> performance with the current number of tickets remaining.<br>
+        Changes in scope or rate of delivery will affect the date (less scope and faster delivery == sooner and vice versa)<br>
+        For a deeper analysis, click the calendar link next to the forecast (<span class="glyphicon glyphicon-calendar"></span>) and tweak the remaining scope or the number of days of history used in the forecast.
+      </td>
+    </tr>
+  </tfoot>
   <tbody>
   {% for row in data %}
       <tr>
           {% for value in row.values %}
           <td>{{ value }}</td>
           {% endfor %}
-          <td>
-            {% if row.xtras.jira_summary %}
-              <a href="{{ JIRA_URL }}/secure/IssueNavigator.jspa?mode=hide&amp;requestId={{ row.xtras.jira_summary.filter_id }}" title="View JIRA filter"><span class="glyphicon glyphicon-filter"></span></a>
+          <td data-order="{{ row.xtras.target_date|date:"Y-m-d"}}">
+            {% if row.xtras.target_date %}
+              {{ row.xtras.target_date|date:"n/j" }}
             {% endif %}
           </td>
-          <td>
-            {% if row.xtras.jira_summary %}
-              <a href="{% url 'forecast' row.xtras.jira_summary.filter_id %}" title="View forecast"><span class="glyphicon glyphicon-calendar"></span></a>
+          <td data-order="{{ row.xtras.predictions.2|week_ending|date:"Y-m-d"}}">
+            {% if row.xtras.predictions %}
+              <a href="{% url 'forecast' row.xtras.jira_summary.filter_id %}" title="View forecast"><span class="glyphicon glyphicon-calendar"></span></a> {{ row.xtras.predictions.2|week_ending|date:"n/j" }} 
             {% endif %}
           </td>
           {% if row.xtras.jira_summary_errors %}
@@ -63,6 +73,12 @@
           {% with current=row.xtras.week_ago_summary previous=None %}
           {% progress_report current previous %}
           {% endwith %}
+
+          <td>
+            {% if row.xtras.jira_summary %}
+              <a href="{{ JIRA_URL }}/secure/IssueNavigator.jspa?mode=hide&amp;requestId={{ row.xtras.jira_summary.filter_id }}" title="View JIRA filter"><span class="glyphicon glyphicon-filter"></span></a>
+            {% endif %}
+          </td>
       </tr>
   {% endfor %}
 </tbody>
