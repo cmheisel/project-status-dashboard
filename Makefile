@@ -27,7 +27,10 @@ clean: clean_pycs
 	rm -rf static
 	rm -rf container/*.db
 
-docs: reqs
+venv/bin/mkdocs: venv
+	./venv/bin/pip install -r requirements-docs.txt
+
+docs: reqs venv/bin/mkdocs
 	./venv/bin/mkdocs build -s
 
 up:
