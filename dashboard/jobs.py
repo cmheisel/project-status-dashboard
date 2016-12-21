@@ -43,8 +43,9 @@ def generate_dashboard():
                 row.xtras['week_ago_summary'] = week_ago_summary
                 logger.debug("Filter {} week_ago summary retrieved".format(p.filter_id))
                 try:
-                    two_weeks_ago = p.created_on - relativedelta(days=14)
-                    row.xtras['predictions'] = predictions.for_project(filter_id=p.filter_id, backlog_size=p.incomplete, start_date=two_weeks_ago)
+                    a_month_ago = p.created_on - relativedelta(days=30)
+                    forecasts = predictions.for_project(filter_id=p.filter_id, backlog_size=p.incomplete, start_date=a_month_ago)
+                    row.xtras['predictions'] = [p.created_on + relativedelta(days=int(f)) for f in forecasts]
                 except ValueError as e:
                     logger.warn("Filter {} predictions error: {}".format(p.filter_id, str(e)))
                     row.xtras['predictions'] = []
