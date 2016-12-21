@@ -55,10 +55,11 @@ def _add_forecasts(xtras, summary, logger):
 
 
 def _add_target_date(xtras, target_date_string):
+    xtras['target_date'] = ""
     try:
         xtras['target_date'] = parse(target_date_string)
-    except ValueError:
-        xtras['target_date'] = ""
+    except (ValueError, AttributeError):
+        pass
     return xtras
 
 
