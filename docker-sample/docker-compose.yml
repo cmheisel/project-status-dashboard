@@ -8,12 +8,14 @@ web:
   ports:
     - "80:8000"
   environment:
-    - DB_NAME=/data/container.db
-    - GOOGLE_SPREADSHEET_ID=long-string-here
+    - DB_NAME=/data/sample.db
+    - GOOGLE_SPREADSHEET_ID=1NJ90QUwSgGYwRdDmvOcxi-QKxfdmcB5IZHi9pXhu1Hw
     - JIRA_URL=http://jira.example.com
+    - JIRA_SSL_VERIFY=True
     - JIRA_AUTH=user,password
     - JIRA_DONE=Closed,Merged
     - GUNICORN_WORKERS=10
     - REDIS_URL=redis:6379
+    - SECRET_KEY=reallylongsupersecretkeyhere
   links:
     - redis
