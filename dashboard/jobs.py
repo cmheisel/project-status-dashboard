@@ -2,6 +2,7 @@ import datetime
 import logging
 
 from dateutil.relativedelta import relativedelta
+from dateutil.parser import parse
 
 from django.conf import settings
 from django.core.cache import cache
@@ -53,6 +54,14 @@ def _add_forecasts(xtras, summary, logger):
     return xtras
 
 
+def _add_target_date(xtras, target_date_string):
+    try:
+        xtras['target_date'] = parse(target_date_string)
+    except ValueError:
+        xtras['target_date'] = ""
+    return xtras
+
+
 @job
 def generate_dashboard():
     logger = logging.getLogger("dashboard.jobs.generate_dashboard")
@@ -61,6 +70,7 @@ def generate_dashboard():
     data = sheets.load_sheet(sheet_id)
     logger.debug("Sheet loaded")
     for row in data:
+        row.xtras = _add_target_date(row.xtras, row.xtras.get('_target_date'))
         if row.xtras.get('_jira_filter'):
             row.xtras = _add_current_jira_summary(row.xtras, row.xtras['_jira_filter'], logger)
         if row.xtras.get('jira_summary'):
