@@ -28,7 +28,7 @@ clean: clean_pycs
 	rm -rf container/*.db
 
 docs: reqs
-	cd docs && make html
+	./venv/bin/mkdocs build -s
 
 up:
 	docker-compose rm -f --all
@@ -50,7 +50,7 @@ release: test_docker clean publish_docs
 	docker push $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 	docker push $(DOCKER_IMAGE_NAME):latest
 
-publish_docs:
+publish_docs: docs
 	./venv/bin/mkdocs gh-deploy
 
 .PHONY: test clean_pycs clean_db clean docs up clean_docker test_docker release
