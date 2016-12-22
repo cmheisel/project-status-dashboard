@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "chartist-plugin-legend": "^0.6.0"
+    "chartist-plugin-legend": "^0.6.0",
+    "chartist-plugin-tooltips": "0.0.17"
   },
   "devDependencies": {},
   "scripts": {
