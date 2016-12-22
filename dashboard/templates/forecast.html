@@ -6,7 +6,8 @@
 {% block page_title %}Project Forecast: {{ filter_id }}{% endblock page_title %}
 
 {% block content %}
-<p><small><a href="{% url 'dashboard' %}" title="Back"><< Back</a></small></p>
+<p><small><a href="{% url 'dashboard' %}" title="Back"><< Back</a> / <a href="{{ JIRA_URL }}/secure/IssueNavigator.jspa?mode=hide&amp;requestId={{ filter_id }}" title="View JIRA filter">JIRA <span class="glyphicon glyphicon-filter"></span></a>
+</small></p>
 
 
 <div class="col-md-6" style="padding-left: 0px">
