@@ -1,11 +1,12 @@
 language: python
+cache: pip
 python:
   - "3.5"
 install:
-  - pip install python-coveralls
-script: "make test"
+  - pip install -r requirements.txt
+script: "make test VENV_BIN=''"
 after_success:
-  coveralls
+  - bash <(curl -s https://codecov.io/bash)
 services:
   - redis-server
 env:

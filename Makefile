@@ -3,15 +3,16 @@ JIRA_URL ?= "http://localhost"
 pytest_invoke = py.test -vvs --flake8 --cov-report html --cov=dashboard ./dashboard
 DOCKER_IMAGE_NAME = "cmheisel/project-status-dashboard"
 DOCKER_IMAGE_VERSION = $(shell cat dashboard/static/dashboard/version.txt)
+VENV_BIN ?= ./venv/bin/
 
 venv:
 	virtualenv ./venv
 
 reqs: venv
-	./venv/bin/pip install -r requirements.txt && touch reqs
+	$(VENV_BIN)pip install -r requirements.txt && touch reqs
 
 test: reqs
-	DB_NAME=":memory:" GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) ./venv/bin/$(pytest_invoke)
+	DB_NAME=":memory:" GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) $(VENV_BIN)$(pytest_invoke)
 
 clean_pycs:
 	find . -name "*.pyc" -exec rm -rf {} \; || true
@@ -28,10 +29,10 @@ clean: clean_pycs
 	rm -rf container/*.db
 
 venv/bin/mkdocs: venv
-	./venv/bin/pip install -r requirements-docs.txt
+	$(VENV_BIN)pip install -r requirements-docs.txt
 
 docs: reqs venv/bin/mkdocs
-	./venv/bin/mkdocs build -s
+	$(VENV_BIN)mkdocs build -s
 
 up:
 	docker-compose rm -f --all
@@ -54,6 +55,6 @@ release: test_docker clean publish_docs
 	docker push $(DOCKER_IMAGE_NAME):latest
 
 publish_docs: docs
-	./venv/bin/mkdocs gh-deploy
+	$(VENV_BIN)mkdocs gh-deploy
 
 .PHONY: test clean_pycs clean_db clean docs up clean_docker test_docker release
