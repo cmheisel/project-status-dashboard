@@ -86,7 +86,7 @@ def summarize_results(results):
             logger.debug("COMPLETE: {} <{}> in <{}>".format(issue['key'], issue['fields']['status']['name'], settings.JIRA_DONE))
             summary['complete'] += 1
         else:
-            logger.info("INCOMPLETE: {} <{}> not in <{}>".format(issue['key'], issue['fields']['status']['name'], settings.JIRA_DONE))
+            logger.debug("INCOMPLETE: {} <{}> not in <{}>".format(issue['key'], issue['fields']['status']['name'], settings.JIRA_DONE))
             summary['incomplete'] += 1
 
     summary['total'] = total
