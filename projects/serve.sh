@@ -6,7 +6,7 @@ echo "DEBUG: $DEBUG"
 
 if [[ "$DEBUG" = "True" ]]; then
   echo "Starting runserver."
-  /app-ve/bin/python /app/manage.py runserver 0.0.0.0:8000
+  /app-ve/bin/python /app/manage.py runserver_plus 0.0.0.0:8000
 else
   echo "Starting gunicorn."
   exec /app-ve/bin/gunicorn projects.wsgi:application \
