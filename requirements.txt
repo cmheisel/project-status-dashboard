@@ -37,3 +37,6 @@ coverage==4.1
 pytest-cov==2.3.0
 pytest-cover==3.0.0
 pytest-coverage==0.0
+
+django-extensions==1.7.9
+werkzeug==0.12.2

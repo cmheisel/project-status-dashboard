@@ -70,7 +70,11 @@
           {% endwith %}
           <td data-order="{{ row.xtras.predictions.2|week_ending|date:"Y-m-d"}}">
             {% if row.xtras.predictions %}
-              <a href="{% url 'forecast' row.xtras.jira_summary.filter_id %}" title="View forecast"><span class="glyphicon glyphicon-calendar"></span></a> {{ row.xtras.predictions.2|week_ending|date:"n/j" }} 
+            <a href="{% url 'forecast' row.xtras.jira_summary.filter_id %}" title="View forecast">{{ row.xtras.predictions.1|week_ending|date:"m/d" }}-{{ row.xtras.predictions.2|week_ending|date:"m/d" }}</a>
+            {% else %}
+              {% if row.xtras.jira_summary.filter_id %}
+              <a href="{% url 'forecast' row.xtras.jira_summary.filter_id %}" title="View forecast">N/A</a>
+              {% endif %}
             {% endif %}
           </td>
 
