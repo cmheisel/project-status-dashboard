@@ -7,8 +7,13 @@ project-status-dashboard
 
 Pull data about projects from a Google Sheet and JIRA and make predictions about when they'll complete.
 
-Usage
-=======
+![Dashboard](docs/img/dashboard-overview.png)
+
+![Forecast overview](docs/img/forecast-overview.png)
+
+
+Usage and Documentation
+===========================
 
 See the [user documentation](https://cmheisel.github.io/project-status-dashboard/)
 
