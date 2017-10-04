@@ -3,7 +3,6 @@ from builtins import str
 
 import csv
 import io
-import logging
 
 from collections import OrderedDict
 
@@ -43,13 +42,9 @@ def _load_via_csv(sheet_id):
 
 
 def parse_csv(csv_text):
-    logger = logging.getLogger("dashboard.services.sheets")
-    logger.info("Got: {}".format(csv_text))
     csv_text = str(csv_text)
-    logger.info("Parsing: {}".format(csv_text))
     c = csv.reader(io.StringIO(csv_text))
     rows = [row for row in c]
-    logger.info("Parsed: {}".format(rows))
     keys = rows.pop(0)
     normal_keys = [k for k in keys if not k.startswith('_')]
 
