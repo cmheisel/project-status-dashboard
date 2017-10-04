@@ -10,3 +10,4 @@ reqs
 .travis.yml
 .python-version
 htmlcov
+google_client_secret.json
