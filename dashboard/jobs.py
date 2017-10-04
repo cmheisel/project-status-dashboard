@@ -69,8 +69,6 @@ def generate_dashboard():
     logger.info("Start")
     sheet_id = settings.GOOGLE_SPREADSHEET_ID
     data = sheets.load_sheet(sheet_id, settings.GOOGLE_SPREADSHEET_AUTH_FILE)
-    logger.debug("Sheet loaded")
-    logger.info("data: {}".format(data))
     for row in data:
         row.xtras = _add_target_date(row.xtras, row.xtras.get('_target_date'))
         if row.xtras.get('_jira_filter'):
