@@ -89,6 +89,9 @@
 </ol>
 </li>
 </ol>
+<h4 id="a-word-on-security">A word on security</h4>
+<p>The default method of accessing your spreadsheet is for you to publish your sheet to a hard-to-guess-but-world-viewable URL. If you're worried about someone viewing your secret project list that way, you can use the <strong>GOOGLE_SPREADSHEET_AUTH_FILE</strong> environment variable to access your spreadsheet via the Google API.</p>
+<p>To generate the required credentials file, you'll want to use <a href="https://www.twilio.com/blog/2017/02/an-easy-way-to-read-and-write-to-a-google-spreadsheet-in-python.html">this handy tutorial on how to setup a service account and get its credentials</a>.</p>
 <h3 id="create-a-jira-filter-for-each-project">Create a JIRA filter for each project</h3>
 <ol>
 <li>Use whatever <em>JIRA search criteria</em> works for your team, common examples include:<ul>
@@ -144,6 +147,7 @@ The <strong>_jira_filter</strong> you provided will automatically add several co
   - JIRA_DONE=Closed,Merged  # The list of states that should be considered &quot;Done&quot; when analyzing tickets
   - GUNICORN_WORKERS=10  # The number of web server workers to spin up, add more if your dashboard receives high traffic
   - REDIS_URL=redis:6379  # Default set for the docker container, can change it if you're hosting your own redis
+  - GOOGLE_SPREADSHEET_AUTH_FILE=/path/to/google_client_secret.jsom # OPTIONAL if you'd like to use the Google API instead of CSV publishing
 </code></pre></div>
         </div>
 
@@ -183,5 +187,5 @@ The <strong>_jira_filter</strong> you provided will automatically add several co
 
 <!--
 MkDocs version : 0.16.0
-Build Date UTC : 2017-05-18 13:19:26
+Build Date UTC : 2017-10-06 20:29:53
 -->
