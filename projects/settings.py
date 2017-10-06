@@ -21,6 +21,7 @@ env = environ.Env(
     REDIS_URL=(str, ""),
     REDIS_DB=(int, 1),
     GOOGLE_SPREADSHEET_ID=(str),
+    GOOGLE_SPREADSHEET_AUTH_FILE=(str, ""),
     JIRA_URL=(str),
     JIRA_AUTH=(tuple, ()),
     JIRA_DONE=(list, ["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"]),
@@ -151,6 +152,7 @@ STATIC_ROOT = str(root.path('static'))
 STATICFILES_DIRS = ()
 
 GOOGLE_SPREADSHEET_ID = env('GOOGLE_SPREADSHEET_ID')
+GOOGLE_SPREADSHEET_AUTH_FILE = env('GOOGLE_SPREADSHEET_AUTH_FILE')
 JIRA_URL = env('JIRA_URL')
 JIRA_AUTH = env('JIRA_AUTH')
 JIRA_DONE = env('JIRA_DONE')

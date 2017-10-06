@@ -1,3 +1,6 @@
+#oauth
+google_client_secret.json
+
 #redis data dir
 data/
 

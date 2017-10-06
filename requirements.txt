@@ -40,3 +40,6 @@ pytest-coverage==0.0
 
 django-extensions==1.7.9
 werkzeug==0.12.2
+
+gspread==0.6.2
+oauth2client==2.2.0
