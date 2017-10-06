@@ -45,8 +45,8 @@ Value1B,Value2B,Value3B,Value4B,SValue5B,SValue6B"""
 
 
 def test_load_sheet_uses_csv_if_auth_arg_is_empty(sheets, mocker):
-    sheets._load_via_csv = mocker.Mock()
-    sheets._load_via_api = mocker.Mock()
+    mocker.spy(sheets, '_load_via_csv')
+    mocker.spy(sheets, '_load_via_api')
 
     sheets.load_sheet("FOOBARBAZ")
     assert sheets._load_via_csv.call_count == 1
@@ -54,11 +54,23 @@ def test_load_sheet_uses_csv_if_auth_arg_is_empty(sheets, mocker):
 
 
 def test_load_sheet_api_if_auth_provided(sheets, mocker):
-    sheets._load_via_csv = mocker.Mock()
-    sheets._load_via_api = mocker.Mock()
+    mock_sheetapi = mocker.Mock()
+    mock_spreadsheet = mocker.Mock()
+    mock_spreadsheet.get_worksheet.return_value
 
-    args = ("FOOBARBAZ", "google_client_secret.json")
+    mock_sheetapi.open_by_key.return_value = mock_spreadsheet
+
+    mock_authorize = mocker.Mock()
+    mock_authorize.return_value = mock_sheetapi
+
+    mocker.patch.object(sheets, 'ServiceAccountCredentials')
+
+    mocker.patch('gspread.authorize', mock_sheetapi)
+
+    mocker.spy(sheets, '_load_via_csv')
+    mocker.spy(sheets, '_load_via_api')
+
+    args = ("FOOBARBAZ", "dashboard/tests/fake_google_client_secret.json")
     sheets.load_sheet(*args)
     assert sheets._load_via_csv.call_count == 0
-    assert sheets._load_via_api.call_count == 1
-    assert sheets._load_via_api.called_with(*args)
+    sheets._load_via_api.assert_called_once_with(*args)
