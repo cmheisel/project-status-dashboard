@@ -1,6 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/cmheisel/project-status-dashboard.png?label=ready&title=Ready)](https://waffle.io/cmheisel/project-status-dashboard)
 [![Build Status](https://travis-ci.org/cmheisel/project-status-dashboard.svg?branch=master)](https://travis-ci.org/cmheisel/project-status-dashboard)
-[![codecov](https://codecov.io/gh/cmheisel/better-project-forecast/branch/master/graph/badge.svg)](https://codecov.io/gh/cmheisel/better-project-forecast)
+[![codecov](https://codecov.io/gh/cmheisel/project-status-dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/cmheisel/project-status-dashboard)
 
 project-status-dashboard
 ==========================
