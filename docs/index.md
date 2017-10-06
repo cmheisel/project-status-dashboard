@@ -19,6 +19,12 @@ You manage what projects are tracked and how they're displayed via [a Google spr
     1. Entire Document
     1. [Example spreadsheet](https://docs.google.com/spreadsheets/d/e/2PACX-1vQ950QA97Rfzkya5I1WRmv12wlCPqF5qDeLtQtWKZzH_PZCR9FmApfzZ-83Zbu3bC9hHoi4Tr71UFWd/pubhtml)
 
+#### A word on security
+
+The default method of accessing your spreadsheet is for you to publish your sheet to a hard-to-guess-but-world-viewable URL. If you're worried about someone viewing your secret project list that way, you can use the **GOOGLE_SPREADSHEET_AUTH_FILE** environment variable to access your spreadsheet via the Google API.
+
+To generate the required credentials file, you'll want to use [this handy tutorial on how to setup a service account and get its credentials](https://www.twilio.com/blog/2017/02/an-easy-way-to-read-and-write-to-a-google-spreadsheet-in-python.html).
+
 ### Create a JIRA filter for each project
 1. Use whatever *JIRA search criteria* works for your team, common examples include:
     * By Epic: ```"Epic Link" = MYPROJ-101```
@@ -78,4 +84,5 @@ environment:
   - JIRA_DONE=Closed,Merged  # The list of states that should be considered "Done" when analyzing tickets
   - GUNICORN_WORKERS=10  # The number of web server workers to spin up, add more if your dashboard receives high traffic
   - REDIS_URL=redis:6379  # Default set for the docker container, can change it if you're hosting your own redis
+  - GOOGLE_SPREADSHEET_AUTH_FILE=/path/to/google_client_secret.jsom # OPTIONAL if you'd like to use the Google API instead of CSV publishing
 ```
