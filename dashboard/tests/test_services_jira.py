@@ -127,6 +127,7 @@ def test_summarize_query_weird_input(jira):
 
 def test_fetch_query_results(settings, jira):
     """Return the results."""
+    settings.JIRA_AUTH = ("user", "password")
     expected = dict(foo="bar", baz="bat")
     expected_json = json.dumps(expected)
     with requests_mock.mock() as m:
@@ -137,6 +138,7 @@ def test_fetch_query_results(settings, jira):
 
 def test_fetch_query_results_with_errors(settings, jira):
     """JIRA responses with error messages should be logged and returned."""
+    settings.JIRA_AUTH = ("user", "password")
     expected = dict(
         errors=[],
         errorMessages=["Was a boring conversation anyway... Luke we're gonna have company!", ],
