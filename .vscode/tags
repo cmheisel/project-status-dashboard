@@ -5834,7 +5834,7 @@ test_enqueue_autocommit_off	../venv/src/django-rq-master/django_rq/tests/tests.p
 test_enqueue_autocommit_on	../venv/src/django-rq-master/django_rq/tests/tests.py	/^    def test_enqueue_autocommit_on(self):$/;"	kind:member	line:467
 test_error	../venv/src/django-rq-master/django_rq/tests/tests.py	/^    def test_error(self):$/;"	kind:member	line:528
 test_fetch_query_results	../dashboard/tests/test_services_jira.py	/^def test_fetch_query_results(settings, jira):$/;"	kind:function	line:128
-test_fetch_query_results_with_errors	../dashboard/tests/test_services_jira.py	/^def test_fetch_query_results_with_errors(settings, jira):$/;"	kind:function	line:138
+test_fetch_query_results_with_errors	../dashboard/tests/test_services_jira.py	/^def test_fetch_query_results_with_errors(settings, jira):$/;"	kind:function	line:139
 test_fill_updated_at	../dashboard/tests/test_services_summaries.py	/^def test_fill_updated_at(summaries, make_one):$/;"	kind:function	line:91
 test_finished_jobs	../venv/src/django-rq-master/django_rq/tests/tests.py	/^    def test_finished_jobs(self):$/;"	kind:member	line:424
 test_for_date	../dashboard/tests/test_services_summaries.py	/^def test_for_date(summaries, make_one, datetime):$/;"	kind:function	line:193
