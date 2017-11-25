@@ -11,3 +11,4 @@ reqs
 .python-version
 htmlcov
 google_client_secret.json
+*.db
