@@ -12,3 +12,4 @@ reqs
 htmlcov
 google_client_secret.json
 *.db
+secrets
