@@ -1,3 +1,6 @@
+#docker stuff
+docker-compose.override.yml
+
 #oauth
 google_client_secret.json
 

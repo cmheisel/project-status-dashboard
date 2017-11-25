@@ -50,6 +50,12 @@ up:
 	docker-compose build
 	docker-compose up
 
+.PHONY: enter
+enter:
+	docker-compose rm -f
+	docker-compose build
+	docker run -ti projectstatusdashboard_web /bin/bash
+
 .PHONY: clean_docker
 clean_docker:
 	docker-compose rm -f --all
