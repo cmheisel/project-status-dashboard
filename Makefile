@@ -63,7 +63,7 @@ clean_docker:
 .PHONY: test_docker
 test_docker: clean clean_docker
 	docker-compose build web
-	docker-compose run -e DB_NAME=":memory:" -e GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) -e JIRA_URL=$(JIRA_URL) web /app-ve/bin/$(pytest_invoke)
+	docker-compose run -e DB_NAME=":memory:" -e GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) -e JIRA_URL=$(JIRA_URL) web /app/run.sh /app-ve/bin/$(pytest_invoke)
 
 .PHONY: release
 release: test_docker clean publish_docs
