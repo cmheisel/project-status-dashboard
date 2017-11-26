@@ -11,4 +11,3 @@ services:
   - redis-server
 env:
   - REDIS_URL=localhost:6379
-  - DEBUG=True
