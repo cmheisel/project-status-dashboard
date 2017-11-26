@@ -11,3 +11,7 @@ reqs
 .python-version
 htmlcov
 google_client_secret.json
+*.db
+secrets
+docker-compose.override.yml
+.vscode
