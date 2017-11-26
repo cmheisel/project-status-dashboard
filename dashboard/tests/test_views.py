@@ -349,3 +349,13 @@ def test_forecast_with_variable_time_arg_empty(views, rf, make_predictable_summa
     assert actual_context.keys() == expected_context.keys()
     for key, value in expected_context.items():
         assert actual_context[key] == expected_context[key], "Key: {}".format(key)
+
+
+@pytest.mark.parametrize("static_url", [
+    '/static/dashboard/node_modules/chartist-plugin-legend/chartist-plugin-legend.js',
+    '/static/dashboard/node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css',
+    '/static/dashboard/version.txt',
+])
+def test_important_static_files(client, static_url):
+    result = client.get(static_url)
+    assert result.status_code == 200

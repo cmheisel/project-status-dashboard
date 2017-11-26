@@ -8,15 +8,14 @@ VENV_BIN ?= ./venv/bin/
 venv:
 	virtualenv ./venv
 
-.PHONY: js_deps
-js_deps:
+reqs: venv 
 	cd dashboard/static/dashboard && npm install
-
-reqs: venv js_deps
 	$(VENV_BIN)pip install -r requirements.txt && touch reqs
 
 .PHONY: test
 test: reqs
+	rm -rf static
+	$(VENV_BIN)python ./manage.py collectstatic --noinput
 	DB_NAME=":memory:" GOOGLE_SPREADSHEET_ID=$(GOOGLE_SPREADSHEET_ID) JIRA_URL=$(JIRA_URL) $(VENV_BIN)$(pytest_invoke)
 
 .PHONY: clean_pycs
