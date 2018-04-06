@@ -85,4 +85,5 @@ environment:
   - GUNICORN_WORKERS=10  # The number of web server workers to spin up, add more if your dashboard receives high traffic
   - REDIS_URL=redis:6379  # Default set for the docker container, can change it if you're hosting your own redis
   - GOOGLE_SPREADSHEET_AUTH_FILE=/path/to/google_client_secret.jsom # OPTIONAL if you'd like to use the Google API instead of CSV publishing
+  - BASE_URL=dashboard/ # OPTIONAL if you want to mount the application a URL other than /
 ```
