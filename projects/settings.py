@@ -27,7 +27,7 @@ env = environ.Env(
     JIRA_DONE=(list, ["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"]),
     JIRA_SSL_VERIFY=(bool, True),
     ALLOWED_HOSTS=(list, ["*", ]),
-    BASE_URL=(str, ""),
+    BASE_URL=(str, "/"),
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
 
@@ -46,7 +46,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
-BASE_URL = env('BASE_URL')
+FORCE_SCRIPT_NAME = env('BASE_URL')
 
 # Application definition
 
