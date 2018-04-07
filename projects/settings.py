@@ -27,7 +27,7 @@ env = environ.Env(
     JIRA_DONE=(list, ["Abandoned", "Done", "Deployed", "In Test Review", "Test Review Complete", "Closed"]),
     JIRA_SSL_VERIFY=(bool, True),
     ALLOWED_HOSTS=(list, ["*", ]),
-    BASE_URL=(str, "/"),
+    BASE_URL=(str, ""),
 )  # set default values and casting
 environ.Env.read_env(str(root.path('.env')))  # reading .env file
 
@@ -149,7 +149,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '{}/static/'.format(env('BASE_URL'))
 STATIC_ROOT = str(root.path('static'))
 STATICFILES_DIRS = ()
 
