@@ -19,7 +19,7 @@ requests==2.9.1
 better-project-forecast==0.0.6
 
 gunicorn==19.6.0
-whitenoise==3.2
+whitenoise==4.0b4
 
 py==1.4.31
 pytest==2.8.7

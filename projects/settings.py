@@ -46,7 +46,8 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
-BASE_URL = env('BASE_URL')
+FORCE_SCRIPT_NAME = env('BASE_URL')
+USE_X_FORWARDED_HOST = True
 
 # Application definition
 
@@ -149,7 +150,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '{}/static/'.format(env('BASE_URL'))
+WHITENOISE_STATIC_PREFIX = '/static/'
 STATIC_ROOT = str(root.path('static'))
 STATICFILES_DIRS = ()
 
