@@ -42,8 +42,12 @@
   <tbody>
   {% for row in data %}
       <tr>
-          {% for value in row.values %}
-          <td>{{ value }}</td>
+          {% for key, value in row.items %}
+          <td>
+            {% if key == "Ticket" %}<a href="{{ JIRA_URL }}/browse/{{ value }}">{% endif %}
+            {{ value }}
+            {% if key == "Ticket" %}</a>{% endif %}
+          </td>
           {% endfor %}
           <td data-order="{{ row.xtras.target_date|date:"Y-m-d"}}">
             {% if row.xtras.target_date %}
